@@ -15,7 +15,7 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-indigo-950 text-white min-h-screen flex flex-col" x-data="firebaseQuiz()">
+<body class="bg-indigo-950 text-white min-h-screen flex flex-col" x-data="quizApp()">
 
     <!-- HEADER / NAVBAR -->
     <header class="bg-indigo-900/80 backdrop-blur border-b border-indigo-800 p-4 flex justify-between items-center shadow-lg">
@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <!---------------- 3. SCREEN: ADMIN LOBBY / WAJIB PESERTA MASUK ---------------->
+        <!---------------- 3. SCREEN: ADMIN LOBBY ---------------->
         <div x-show="role === 'admin' && gameState.screen === 'lobby'" class="space-y-6 py-6" x-cloak>
             <div class="flex flex-col sm:flex-row justify-between items-center bg-indigo-900/40 border border-indigo-800 p-6 rounded-3xl gap-4 backdrop-blur">
                 <div>
@@ -126,12 +126,12 @@
                     </template>
                 </div>
                 <div x-show="Object.keys(participants).length === 0" class="text-center py-12 text-indigo-400 text-sm">
-                    Belum ada peserta yang bergabung lewat HP. Bagikan link untuk memulai.
+                    Belum ada peserta yang bergabung lewat HP.
                 </div>
             </div>
         </div>
 
-        <!---------------- 4. SCREEN: PERTANYAAN BERJALAN (SOAL 1 - 10) ---------------->
+        <!---------------- 4. SCREEN: PERTANYAAN BERJALAN ---------------->
         <div x-show="gameState.screen === 'question'" class="space-y-6 max-w-4xl mx-auto w-full py-4" x-cloak>
             <div class="flex justify-between items-center bg-indigo-900/60 border border-indigo-800 px-6 py-4 rounded-2xl backdrop-blur">
                 <div class="flex items-center space-x-3">
@@ -180,7 +180,7 @@
             </div>
         </div>
 
-        <!---------------- 5. SCREEN: LEADERBOARD ANTAR SOAL (TOP 10) ---------------->
+        <!---------------- 5. SCREEN: LEADERBOARD ---------------->
         <div x-show="gameState.screen === 'leaderboard'" class="space-y-6 max-w-2xl mx-auto w-full py-6" x-cloak>
             <div class="text-center space-y-1">
                 <h2 class="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-300 bg-clip-text text-transparent">
@@ -209,9 +209,6 @@
                 <button @click="nextQuestion()" class="px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 font-bold rounded-xl shadow-lg transition">
                     Lanjut ke Soal Berikutnya ➡️
                 </button>
-            </div>
-            <div class="text-center text-xs text-indigo-400 animate-pulse" x-show="role === 'participant'">
-                Menunggu admin melanjutkan ke soal berikutnya...
             </div>
         </div>
 
@@ -264,7 +261,7 @@
         Aplikasi Kuis Interaktif Real-Time • KKG Korwilbiddikbud Kec. Mranggen Kab. Demak[cite: 1]
     </footer>
 
-    <!-- FIREBASE & LOGIKA UTUH -->
+    <!-- FIREBASE CDN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -284,8 +281,11 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        window.dbRef = { ref, set, onValue, update, db };
+    </script>
 
-        // 10 Soal Lengkap Modul 4 KKG[cite: 1]
+    <!-- LOGIKA UTAMA ALPINE.JS -->
+    <script>
         const questionsData = [
             {
                 question: "Ibu Purwanti mengajar di kelas 3 SD dan ingin menerapkan diferensiasi konten pada materi \"Keliling dan Luas Bangun Datar\". Manakah dari langkah-langkah berikut yang termasuk strategi diferensiasi konten?",
@@ -399,8 +399,8 @@
             }
         ];
 
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('firebaseQuiz', () => ({
+        function quizApp() {
+            return {
                 role: 'role-select',
                 view: 'role-select',
                 soundEnabled: true,
@@ -416,40 +416,46 @@
                 timerInterval: null,
 
                 init() {
-                    // Sinkronisasi Real-time Database Firebase
-                    onValue(ref(db, 'quizState'), (snapshot) => {
-                        const data = snapshot.val();
-                        if (data) {
-                            let oldScreen = this.gameState.screen;
-                            this.gameState = data;
+                    let checkInterval = setInterval(() => {
+                        if (window.dbRef) {
+                            clearInterval(checkInterval);
+                            const { ref, onValue } = window.dbRef;
                             
-                            // Trigger sound effects berdasarkan perubahan layar
-                            if (oldScreen !== data.screen) {
-                                if (data.screen === 'question') {
-                                    this.playMillionaireSound();
-                                    this.selectedOptions = [];
-                                    this.hasSubmitted = false;
-                                } else if (data.screen === 'podium') {
-                                    this.playPodiumSound();
+                            onValue(ref(window.dbRef.db, 'quizState'), (snapshot) => {
+                                const data = snapshot.val();
+                                if (data) {
+                                    let oldScreen = this.gameState.screen;
+                                    this.gameState = data;
+                                    if (oldScreen !== data.screen) {
+                                        if (data.screen === 'question') {
+                                            this.playMillionaireSound();
+                                            this.selectedOptions = [];
+                                            this.hasSubmitted = false;
+                                        } else if (data.screen === 'podium') {
+                                            this.playPodiumSound();
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                    });
+                            });
 
-                    onValue(ref(db, 'participants'), (snapshot) => {
-                        const data = snapshot.val();
-                        if (data) {
-                            this.participants = data;
-                            if (this.participants[this.myId]) {
-                                this.myScore = this.participants[this.myId].score || 0;
-                            }
+                            onValue(ref(window.dbRef.db, 'participants'), (snapshot) => {
+                                const data = snapshot.val();
+                                if (data) {
+                                    this.participants = data;
+                                    if (this.participants[this.myId]) {
+                                        this.myScore = this.participants[this.myId].score || 0;
+                                    }
+                                }
+                            });
                         }
-                    });
+                    }, 200);
                 },
 
                 setupAdmin() {
-                    set(ref(db, 'quizState'), { screen: 'lobby', currentIndex: 0, timeLeft: 30 });
-                    set(ref(db, 'participants'), {});
+                    if (!window.dbRef) return;
+                    const { ref, set } = window.dbRef;
+                    set(ref(window.dbRef.db, 'quizState'), { screen: 'lobby', currentIndex: 0, timeLeft: 30 });
+                    set(ref(window.dbRef.db, 'participants'), {});
                 },
 
                 joinGame() {
@@ -457,7 +463,9 @@
                         alert('Silakan masukkan nama Anda terlebih dahulu!');
                         return;
                     }
-                    set(ref(db, `participants/${this.myId}`), {
+                    if (!window.dbRef) return;
+                    const { ref, set } = window.dbRef;
+                    set(ref(window.dbRef.db, `participants/${this.myId}`), {
                         name: this.participantName,
                         avatar: this.selectedAvatar,
                         score: 0
@@ -466,7 +474,9 @@
                 },
 
                 startQuiz() {
-                    set(ref(db, 'quizState'), { screen: 'question', currentIndex: 0, timeLeft: 30 });
+                    if (!window.dbRef) return;
+                    const { ref, set } = window.dbRef;
+                    set(ref(window.dbRef.db, 'quizState'), { screen: 'question', currentIndex: 0, timeLeft: 30 });
                     this.startAdminTimer();
                 },
 
@@ -474,28 +484,32 @@
                     if (this.timerInterval) clearInterval(this.timerInterval);
                     let timeLeft = 30;
                     this.timerInterval = setInterval(() => {
+                        if (!window.dbRef) return;
+                        const { ref, update } = window.dbRef;
                         if (timeLeft > 0) {
                             timeLeft--;
-                            update(ref(db, 'quizState'), { timeLeft: timeLeft });
+                            update(ref(window.dbRef.db, 'quizState'), { timeLeft: timeLeft });
                         } else {
                             clearInterval(this.timerInterval);
-                            update(ref(db, 'quizState'), { screen: 'leaderboard' });
+                            update(ref(window.dbRef.db, 'quizState'), { screen: 'leaderboard' });
                         }
                     }, 1000);
                 },
 
                 forceNextQuestion() {
                     if (this.timerInterval) clearInterval(this.timerInterval);
-                    update(ref(db, 'quizState'), { screen: 'leaderboard' });
+                    const { ref, update } = window.dbRef;
+                    update(ref(window.dbRef.db, 'quizState'), { screen: 'leaderboard' });
                 },
 
                 nextQuestion() {
                     let nextIdx = this.gameState.currentIndex + 1;
+                    const { ref, update } = window.dbRef;
                     if (nextIdx < questionsData.length) {
-                        update(ref(db, 'quizState'), { screen: 'question', currentIndex: nextIdx, timeLeft: 30 });
+                        update(ref(window.dbRef.db, 'quizState'), { screen: 'question', currentIndex: nextIdx, timeLeft: 30 });
                         this.startAdminTimer();
                     } else {
-                        update(ref(db, 'quizState'), { screen: 'podium' });
+                        update(ref(window.dbRef.db, 'quizState'), { screen: 'podium' });
                     }
                 },
 
@@ -524,7 +538,8 @@
                         let bonus = this.gameState.timeLeft * 10;
                         let currentScore = (this.participants[this.myId]?.score || 0) + 100 + bonus;
                         this.myScore = currentScore;
-                        update(ref(db, `participants/${this.myId}`), { score: currentScore });
+                        const { ref, update } = window.dbRef;
+                        update(ref(window.dbRef.db, `participants/${this.myId}`), { score: currentScore });
                         this.playTone(800, 'triangle', 0.3);
                     } else {
                         this.playTone(200, 'sawtooth', 0.3);
@@ -579,8 +594,8 @@
                 toggleAudio() {
                     this.soundEnabled = !this.soundEnabled;
                 }
-            }));
-        });
+            }
+        }
     </script>
 </body>
 </html>
