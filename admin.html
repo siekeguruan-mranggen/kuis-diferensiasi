@@ -7,187 +7,196 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Poppins', sans-serif; } [x-cloak] { display: none !important; }</style>
+    <style>
+        body { font-family: 'Poppins', sans-serif; overflow: hidden; }
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950 text-white min-h-screen flex flex-col" x-data="adminApp()">
+<body class="bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950 text-white h-screen w-screen flex flex-col justify-between overflow-hidden p-3 sm:p-4" x-data="adminApp()">
 
-    <header class="bg-indigo-900/60 backdrop-blur-md border-b border-indigo-700/50 p-4 sm:p-5 flex justify-between items-center shadow-2xl">
+    <!-- HEADER ADMIN (Kompak & Elegan) -->
+    <header class="bg-indigo-900/60 backdrop-blur-md border border-indigo-700/50 px-4 py-2.5 rounded-2xl flex justify-between items-center shadow-xl shrink-0">
         <div class="flex items-center space-x-3">
-            <span class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-black px-4 py-2 rounded-2xl text-xl shadow-lg">💻 PANEL ADMIN KUIS</span>
-            <span class="text-xs bg-purple-900/80 text-purple-200 border border-purple-500/30 px-3 py-1.5 rounded-full font-semibold hidden sm:inline-block">Kontrol Utama Guru</span>
+            <span class="bg-gradient-to-r from-pink-500 to-indigo-600 text-white font-black px-3 py-1.5 rounded-xl text-sm shadow">💻 ADMIN PROYEKTOR</span>
+            <span class="text-[11px] bg-purple-900/80 text-purple-200 border border-purple-500/30 px-2.5 py-1 rounded-full font-semibold hidden sm:inline-block">Modul 4: Diferensiasi</span>
         </div>
-        <div class="flex items-center space-x-3">
-            <button @click="resetData()" class="bg-red-700 hover:bg-red-600 px-3 py-2 rounded-xl text-xs font-bold transition shadow">🗑️ Reset Data</button>
-            <button @click="toggleAudio()" class="bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded-xl text-xs font-bold transition">
-                <span x-text="soundEnabled ? '🔊 Sound: ON' : '🔇 Sound: OFF'"></span>
+        <div class="flex items-center space-x-2">
+            <button @click="resetData()" class="bg-red-700 hover:bg-red-600 px-2.5 py-1.5 rounded-lg text-xs font-bold transition shadow">🗑️ Reset</button>
+            <button @click="toggleBGM()" class="bg-purple-800 hover:bg-purple-700 px-2.5 py-1.5 rounded-lg text-xs font-bold transition">
+                <span x-text="bgmEnabled ? '🎵 Musik: ON' : '🔇 Musik: OFF'"></span>
+            </button>
+            <button @click="toggleAudio()" class="bg-indigo-800 hover:bg-indigo-700 px-2.5 py-1.5 rounded-lg text-xs font-bold transition">
+                <span x-text="soundEnabled ? '🔊 SFX: ON' : '🔇 SFX: OFF'"></span>
             </button>
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 flex flex-col justify-center">
+    <!-- MAIN VIEWPORT (Pas 1 Layar Penuh) -->
+    <main class="flex-1 max-w-7xl w-full mx-auto my-2 flex flex-col justify-center items-center overflow-hidden">
 
         <!-- LOBBY ADMIN -->
-        <div x-show="gameState.screen === 'lobby'" class="space-y-8 py-4">
-            <div class="bg-gradient-to-r from-purple-900/80 via-indigo-900/80 to-pink-900/80 border border-purple-500/40 p-8 rounded-3xl shadow-2xl flex flex-col lg:flex-row justify-between items-center gap-6 backdrop-blur-xl">
-                <div class="space-y-2 text-center lg:text-left">
-                    <span class="bg-pink-500/20 text-pink-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-pink-500/30">Ruang Tunggu Utama</span>
-                    <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white">SIAPKAN PESERTA ANDA!</h1>
-                    <p class="text-indigo-200 text-sm">Bagikan link peserta ke HP anggota KKG. Tekan hitung mundur sebelum mulai.</p>
+        <div x-show="gameState.screen === 'lobby'" class="w-full h-full flex flex-col justify-between space-y-3 py-1" x-cloak>
+            <div class="bg-gradient-to-r from-purple-900/80 via-indigo-900/80 to-pink-900/80 border border-purple-500/40 px-6 py-5 rounded-2xl shadow-2xl flex justify-between items-center gap-4 backdrop-blur-xl shrink-0">
+                <div class="space-y-1">
+                    <span class="bg-pink-500/20 text-pink-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-pink-500/30 uppercase">Ruang Tunggu Utama</span>
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white">SIAPKAN PESERTA ANDA!</h1>
+                    <p class="text-indigo-200 text-xs">Bagikan tautan ke HP peserta. Tekan hitung mundur untuk memulai turnamen.</p>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <button @click="startCountdown()" class="px-6 py-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 font-black text-sm rounded-2xl shadow-xl transition transform hover:scale-105">
-                        ⏱️ Hitung Mundur (3 Detik)
+                <div class="flex gap-2 shrink-0">
+                    <button @click="startCountdown()" class="px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
+                        ⏱️ Hitung Mundur (3s)
                     </button>
-                    <button @click="startQuiz()" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 font-black text-sm rounded-2xl shadow-xl transition transform hover:scale-105">
-                        🚀 Mulai Kuis Langsung
+                    <button @click="startQuiz()" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
+                        🚀 Mulai Langsung
                     </button>
                 </div>
             </div>
 
-            <div class="bg-indigo-950/50 border border-indigo-800/80 p-6 sm:p-8 rounded-3xl shadow-2xl backdrop-blur-md min-h-[320px]">
-                <div class="flex justify-between items-center mb-6 pb-4 border-b border-indigo-900">
-                    <h3 class="font-black text-lg text-white">👥 Peserta Bergabung (<span x-text="Object.keys(participants).length"></span>)</h3>
-                    <span class="text-xs text-emerald-400 font-bold flex items-center gap-2 bg-emerald-950/60 px-3 py-1.5 rounded-xl border border-emerald-500/30">● Real-Time Sinkron</span>
+            <!-- Peserta Bergabung Grid Terbatas dalam 1 Layar -->
+            <div class="bg-indigo-950/50 border border-indigo-800/80 p-5 rounded-2xl shadow-2xl backdrop-blur-md flex-1 flex flex-col overflow-hidden">
+                <div class="flex justify-between items-center mb-3 pb-2 border-b border-indigo-900 shrink-0">
+                    <h3 class="font-black text-sm text-white">👥 Peserta Bergabung (<span x-text="Object.keys(participants).length"></span>)</h3>
+                    <span class="text-[11px] text-emerald-400 font-bold flex items-center gap-1.5 bg-emerald-950/60 px-2.5 py-1 rounded-lg border border-emerald-500/30">● Real-Time Sinkron</span>
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
+                <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 gap-3 overflow-y-auto max-h-[50vh] pr-1">
                     <template x-for="p in Object.values(participants)" :key="p.name">
-                        <div class="bg-indigo-900/80 border border-purple-500/40 p-4 rounded-2xl flex flex-col items-center text-center space-y-2 shadow-xl">
-                            <span class="text-4xl" x-text="p.avatar"></span>
-                            <p class="text-xs font-black truncate w-full text-white" x-text="p.name"></p>
+                        <div class="bg-indigo-900/80 border border-purple-500/40 p-2.5 rounded-xl flex flex-col items-center text-center space-y-1 shadow-lg">
+                            <span class="text-3xl" x-text="p.avatar"></span>
+                            <p class="text-[11px] font-black truncate w-full text-white" x-text="p.name"></p>
                         </div>
                     </template>
                 </div>
-                <div x-show="Object.keys(participants).length === 0" class="text-center py-16 text-indigo-400 text-sm">
+                <div x-show="Object.keys(participants).length === 0" class="m-auto text-indigo-400 text-xs text-center py-6">
                     Belum ada peserta yang bergabung lewat HP.
                 </div>
             </div>
         </div>
 
         <!-- COUNTDOWN ADMIN -->
-        <div x-show="gameState.screen === 'countdown'" class="text-center space-y-6 py-20" x-cloak>
-            <p class="text-indigo-300 text-xl font-bold uppercase tracking-widest">Kuis Akan Segera Dimulai...</p>
-            <div class="text-9xl font-black bg-gradient-to-r from-pink-400 to-amber-300 bg-clip-text text-transparent animate-bounce" x-text="gameState.countdownVal"></div>
+        <div x-show="gameState.screen === 'countdown'" class="text-center space-y-4 my-auto" x-cloak>
+            <p class="text-indigo-300 text-lg font-bold uppercase tracking-widest">Kuis Akan Segera Dimulai...</p>
+            <div class="text-8xl sm:text-9xl font-black bg-gradient-to-r from-pink-400 to-amber-300 bg-clip-text text-transparent animate-bounce" x-text="gameState.countdownVal"></div>
         </div>
 
-        <!-- PERTANYAAN ADMIN -->
-        <div x-show="gameState.screen === 'question'" class="space-y-6 max-w-4xl mx-auto w-full py-4" x-cloak>
-            <div class="flex justify-between items-center bg-indigo-900/60 border border-indigo-800 px-6 py-4 rounded-2xl">
-                <span class="bg-purple-600 text-white text-xs font-black px-4 py-2 rounded-xl" x-text="'Soal ' + (gameState.currentIndex + 1) + ' / 10'"></span>
-                <div class="bg-indigo-950 border-2 border-pink-500 px-5 py-2 rounded-2xl font-mono font-black text-pink-400 text-lg">
+        <!-- PERTANYAAN ADMIN (Padat 1 Layar) -->
+        <div x-show="gameState.screen === 'question'" class="space-y-4 max-w-4xl w-full mx-auto my-auto" x-cloak>
+            <div class="flex justify-between items-center bg-indigo-900/60 border border-indigo-800 px-5 py-3 rounded-2xl shadow-lg">
+                <span class="bg-purple-600 text-white text-xs font-black px-3.5 py-1.5 rounded-xl" x-text="'Soal ' + (gameState.currentIndex + 1) + ' / 10'"></span>
+                <div class="bg-indigo-950 border border-pink-500 px-4 py-1.5 rounded-2xl font-mono font-black text-pink-400 text-base">
                     ⏳ Sisa Waktu: <span x-text="gameState.timeLeft"></span>s
                 </div>
             </div>
 
-            <div class="bg-indigo-900/80 border border-indigo-700 p-8 rounded-3xl shadow-2xl space-y-4">
-                <h2 class="text-xl sm:text-2xl font-black text-white leading-relaxed" x-text="currentQuestion.question"></h2>
-                <div class="inline-block bg-pink-500/20 text-pink-300 text-xs font-bold px-3.5 py-1.5 rounded-xl border border-pink-500/30">
+            <div class="bg-indigo-900/80 border border-indigo-700 p-6 rounded-2xl shadow-2xl space-y-2">
+                <h2 class="text-base sm:text-lg font-black text-white leading-snug" x-text="currentQuestion.question"></h2>
+                <span class="inline-block bg-pink-500/20 text-pink-300 text-[11px] font-bold px-3 py-1 rounded-lg border border-pink-500/30">
                     💡 Petunjuk: Pilih 2 atau lebih jawaban yang benar!
-                </div>
+                </span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <template x-for="(optText, optKey) in currentQuestion.options">
-                    <div class="p-5 rounded-2xl border bg-indigo-900/40 border-indigo-800 flex items-start space-x-4 shadow">
-                        <span class="w-9 h-9 rounded-xl flex items-center justify-center font-black text-base bg-indigo-950 text-pink-300 border border-indigo-700 shrink-0" x-text="optKey"></span>
-                        <span class="text-sm font-semibold leading-relaxed flex-1" x-text="optText"></span>
+                    <div class="p-3.5 rounded-xl border bg-indigo-900/40 border-indigo-800 flex items-start space-x-3 shadow">
+                        <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-sm bg-indigo-950 text-pink-300 border border-indigo-700 shrink-0" x-text="optKey"></span>
+                        <span class="text-xs font-semibold leading-relaxed flex-1" x-text="optText"></span>
                     </div>
                 </template>
             </div>
 
-            <div class="flex justify-between items-center bg-indigo-950/80 border border-indigo-900 p-5 rounded-2xl">
-                <p class="text-xs text-indigo-300">Peserta sedang menjawab di perangkat mereka...</p>
-                <button @click="forceTimeOut()" class="px-5 py-3 bg-pink-700 hover:bg-pink-600 text-xs font-black rounded-xl shadow transition">
+            <div class="flex justify-between items-center bg-indigo-950/80 border border-indigo-900 px-4 py-3 rounded-xl shadow-lg">
+                <p class="text-[11px] text-indigo-300">Peserta sedang menjawab di perangkat mereka...</p>
+                <button @click="forceTimeOut()" class="px-4 py-2 bg-pink-700 hover:bg-pink-600 text-xs font-black rounded-xl shadow transition">
                     Tutup Soal & Lihat Jawaban ⏭️
                 </button>
             </div>
         </div>
 
         <!-- SESI REVIEW JAWABAN BENAR -->
-        <div x-show="gameState.screen === 'review'" class="space-y-6 max-w-4xl mx-auto w-full py-4 text-center" x-cloak>
-            <div class="bg-gradient-to-r from-emerald-900/80 to-teal-900/80 border-2 border-emerald-500 p-8 rounded-3xl shadow-2xl space-y-4">
-                <span class="text-5xl animate-bounce inline-block">✅</span>
-                <h2 class="text-2xl sm:text-3xl font-black text-emerald-300">WAKTU HABIS! KUNCI JAWABAN BENAR:</h2>
-                <div class="flex flex-wrap justify-center gap-3 pt-2">
+        <div x-show="gameState.screen === 'review'" class="space-y-4 max-w-3xl w-full mx-auto my-auto text-center" x-cloak>
+            <div class="bg-gradient-to-r from-emerald-900/90 to-teal-900/90 border-2 border-emerald-500 p-6 rounded-3xl shadow-2xl space-y-3">
+                <span class="text-4xl animate-bounce inline-block">✅</span>
+                <h2 class="text-xl sm:text-2xl font-black text-emerald-300">WAKTU HABIS! KUNCI JAWABAN BENAR:</h2>
+                <div class="flex flex-wrap justify-center gap-2.5 pt-1">
                     <template x-for="k in currentQuestion.keys">
-                        <span class="w-14 h-14 rounded-2xl bg-emerald-500 text-indigo-950 text-2xl font-black flex items-center justify-center shadow-lg border-2 border-white" x-text="k"></span>
+                        <span class="w-12 h-12 rounded-xl bg-emerald-500 text-indigo-950 text-xl font-black flex items-center justify-center shadow-lg border-2 border-white" x-text="k"></span>
                     </template>
                 </div>
-                <p class="text-xs text-emerald-200 pt-2">Perhatikan kunci jawaban di atas. Menuju papan skor peserta terbaik...</p>
+                <p class="text-[11px] text-emerald-200">Menuju papan skor peserta terbaik...</p>
             </div>
-            <button @click="goToLeaderboard()" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 font-black rounded-2xl shadow-xl transition transform hover:scale-105">
+            <button @click="goToLeaderboard()" class="px-7 py-3 bg-gradient-to-r from-purple-600 to-pink-600 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
                 Lihat Papan Skor 10 Besar 📊
             </button>
         </div>
 
-        <!-- LEADERBOARD KAHOOT STYLE -->
-        <div x-show="gameState.screen === 'leaderboard'" class="space-y-6 max-w-2xl mx-auto w-full py-6" x-cloak>
-            <div class="text-center space-y-1">
-                <h2 class="text-3xl font-black bg-gradient-to-r from-amber-300 via-pink-400 to-purple-300 bg-clip-text text-transparent">
+        <!-- LEADERBOARD 10 BESAR (Muat 1 Layar) -->
+        <div x-show="gameState.screen === 'leaderboard'" class="space-y-3 max-w-2xl w-full mx-auto my-auto" x-cloak>
+            <div class="text-center space-y-0.5">
+                <h2 class="text-2xl font-black bg-gradient-to-r from-amber-300 via-pink-400 to-purple-300 bg-clip-text text-transparent">
                     TOP 10 PERINGKAT TERBAIK
                 </h2>
-                <p class="text-xs text-indigo-300" x-text="'Setelah Pertanyaan ke-' + (gameState.currentIndex + 1)"></p>
+                <p class="text-[11px] text-indigo-300" x-text="'Setelah Pertanyaan ke-' + (gameState.currentIndex + 1)"></p>
             </div>
 
-            <div class="bg-indigo-900/60 border border-purple-500/40 p-6 rounded-3xl shadow-2xl space-y-3">
+            <div class="bg-indigo-900/60 border border-purple-500/40 p-4 rounded-2xl shadow-2xl space-y-2 max-h-[55vh] overflow-y-auto">
                 <template x-for="(lead, idx) in getTop10()" :key="idx">
-                    <div class="flex items-center justify-between p-4 rounded-2xl border transition shadow-lg transform hover:scale-102"
+                    <div class="flex items-center justify-between p-2.5 rounded-xl border transition shadow-md"
                         :class="idx === 0 ? 'bg-amber-500/20 border-amber-400 text-amber-200' : (idx === 1 ? 'bg-slate-400/20 border-slate-300 text-slate-200' : (idx === 2 ? 'bg-amber-700/20 border-amber-600 text-amber-300' : 'bg-indigo-950/80 border-indigo-800 text-indigo-200'))">
-                        <div class="flex items-center space-x-4">
-                            <span class="w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm"
+                        <div class="flex items-center space-x-3">
+                            <span class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs"
                                 :class="idx === 0 ? 'bg-amber-400 text-indigo-950' : (idx === 1 ? 'bg-slate-300 text-indigo-950' : (idx === 2 ? 'bg-amber-600 text-white' : 'bg-indigo-900 text-indigo-300'))"
                                 x-text="idx + 1"></span>
-                            <span class="text-3xl" x-text="lead.avatar"></span>
-                            <span class="font-black text-base" x-text="lead.name"></span>
+                            <span class="text-2xl" x-text="lead.avatar"></span>
+                            <span class="font-black text-xs sm:text-sm" x-text="lead.name"></span>
                         </div>
-                        <div class="font-mono font-black text-pink-400 text-base" x-text="lead.score + ' Poin'"></div>
+                        <div class="font-mono font-black text-pink-400 text-xs sm:text-sm" x-text="lead.score + ' Poin'"></div>
                     </div>
                 </template>
             </div>
 
-            <div class="text-center">
-                <button @click="nextQuestion()" class="px-10 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 font-black text-base rounded-2xl shadow-2xl transition transform hover:scale-105">
+            <div class="text-center pt-1">
+                <button @click="nextQuestion()" class="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
                     Lanjut ke Soal Berikutnya ➡️
                 </button>
             </div>
         </div>
 
-        <!-- PODIUM AKHIR 1, 2, 3 -->
-        <div x-show="gameState.screen === 'podium'" class="space-y-8 max-w-3xl mx-auto w-full py-6 text-center" x-cloak>
-            <div class="space-y-2">
-                <h1 class="text-4xl sm:text-5xl font-black bg-gradient-to-r from-amber-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+        <!-- PODIUM AKHIR 1, 2, 3 (Muat 1 Layar) -->
+        <div x-show="gameState.screen === 'podium'" class="space-y-4 max-w-3xl w-full mx-auto my-auto text-center" x-cloak>
+            <div class="space-y-1">
+                <h1 class="text-3xl sm:text-4xl font-black bg-gradient-to-r from-amber-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
                     🏆 PODIUM JUARA UTAMA 🏆
                 </h1>
-                <p class="text-indigo-200 text-sm">Hasil Akhir Evaluasi Modul 4: Strategi Pembelajaran Diferensiasi</p>
+                <p class="text-indigo-200 text-xs">Hasil Akhir Evaluasi Modul 4: Strategi Pembelajaran Diferensiasi</p>
             </div>
 
-            <div class="grid grid-cols-3 gap-4 items-end pt-10 max-w-lg mx-auto">
-                <div class="bg-indigo-900/80 border-2 border-slate-300/50 p-5 rounded-3xl flex flex-col items-center space-y-3 pb-8 shadow-2xl">
-                    <span class="text-4xl">🥈</span>
-                    <span class="text-4xl" x-text="getPodium(1)?.avatar || '👤'"></span>
-                    <p class="font-black text-xs truncate max-w-[100px]" x-text="getPodium(1)?.name || '-'"></p>
-                    <span class="text-xs font-mono text-pink-300 font-black" x-text="(getPodium(1)?.score || 0) + ' Poin'"></span>
-                    <div class="w-full bg-slate-400/40 h-20 rounded-2xl flex items-center justify-center font-black text-slate-200 text-lg">2</div>
+            <div class="grid grid-cols-3 gap-3 items-end pt-4 max-w-md mx-auto">
+                <div class="bg-indigo-900/80 border border-slate-300/50 p-3 rounded-2xl flex flex-col items-center space-y-2 pb-5 shadow-2xl">
+                    <span class="text-3xl">🥈</span>
+                    <span class="text-3xl" x-text="getPodium(1)?.avatar || '👤'"></span>
+                    <p class="font-black text-[11px] truncate max-w-[80px]" x-text="getPodium(1)?.name || '-'"></p>
+                    <span class="text-[10px] font-mono text-pink-300 font-black" x-text="(getPodium(1)?.score || 0) + ' Poin'"></span>
+                    <div class="w-full bg-slate-400/40 h-14 rounded-xl flex items-center justify-center font-black text-slate-200 text-sm">2</div>
                 </div>
 
-                <div class="bg-gradient-to-b from-amber-500/30 to-indigo-900/90 border-2 border-amber-400 p-5 rounded-3xl flex flex-col items-center space-y-3 pb-12 shadow-2xl transform -translate-y-6">
-                    <span class="text-5xl animate-bounce">👑</span>
-                    <span class="text-5xl" x-text="getPodium(0)?.avatar || '👤'"></span>
-                    <p class="font-black text-sm truncate max-w-[100px]" x-text="getPodium(0)?.name || '-'"></p>
-                    <span class="text-xs font-mono text-amber-300 font-black" x-text="(getPodium(0)?.score || 0) + ' Poin'"></span>
-                    <div class="w-full bg-amber-500/60 h-32 rounded-2xl flex items-center justify-center font-black text-amber-200 text-xl">1</div>
+                <div class="bg-gradient-to-b from-amber-500/30 to-indigo-900/90 border-2 border-amber-400 p-3 rounded-2xl flex flex-col items-center space-y-2 pb-8 shadow-2xl transform -translate-y-4">
+                    <span class="text-4xl animate-bounce">👑</span>
+                    <span class="text-4xl" x-text="getPodium(0)?.avatar || '👤'"></span>
+                    <p class="font-black text-xs truncate max-w-[80px]" x-text="getPodium(0)?.name || '-'"></p>
+                    <span class="text-[10px] font-mono text-amber-300 font-black" x-text="(getPodium(0)?.score || 0) + ' Poin'"></span>
+                    <div class="w-full bg-amber-500/60 h-24 rounded-xl flex items-center justify-center font-black text-amber-200 text-base">1</div>
                 </div>
 
-                <div class="bg-indigo-900/80 border-2 border-amber-600/50 p-5 rounded-3xl flex flex-col items-center space-y-3 pb-6 shadow-2xl">
-                    <span class="text-4xl">🥉</span>
-                    <span class="text-4xl" x-text="getPodium(2)?.avatar || '👤'"></span>
-                    <p class="font-black text-xs truncate max-w-[100px]" x-text="getPodium(2)?.name || '-'"></p>
-                    <span class="text-xs font-mono text-pink-300 font-black" x-text="(getPodium(2)?.score || 0) + ' Poin'"></span>
-                    <div class="w-full bg-amber-700/40 h-14 rounded-2xl flex items-center justify-center font-black text-amber-400 text-lg">3</div>
+                <div class="bg-indigo-900/80 border border-amber-600/50 p-3 rounded-2xl flex flex-col items-center space-y-2 pb-4 shadow-2xl">
+                    <span class="text-3xl">🥉</span>
+                    <span class="text-3xl" x-text="getPodium(2)?.avatar || '👤'"></span>
+                    <p class="font-black text-[11px] truncate max-w-[80px]" x-text="getPodium(2)?.name || '-'"></p>
+                    <span class="text-[10px] font-mono text-pink-300 font-black" x-text="(getPodium(2)?.score || 0) + ' Poin'"></span>
+                    <div class="w-full bg-amber-700/40 h-10 rounded-xl flex items-center justify-center font-black text-amber-400 text-sm">3</div>
                 </div>
             </div>
 
-            <div class="pt-6">
-                <button @click="setupAdmin()" class="px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 font-black rounded-2xl shadow-2xl transition transform hover:scale-105">
+            <div class="pt-2">
+                <button @click="setupAdmin()" class="px-7 py-3 bg-gradient-to-r from-pink-600 to-purple-600 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
                     Ulangi Kuis Dari Awal 🔄
                 </button>
             </div>
@@ -195,11 +204,13 @@
 
     </main>
 
-    <footer class="text-center py-6 text-xs text-indigo-400 border-t border-indigo-900/50 space-y-1">
+    <!-- FOOTER ADMIN (Kompak) -->
+    <footer class="text-center py-2 text-[11px] text-indigo-400 border-t border-indigo-900/50 shrink-0 space-y-0.5">
         <p>Aplikasi Kuis Interaktif Real-Time • KKG Korwilbiddikbud Kec. Mranggen Kab. Demak</p>
         <p class="font-semibold text-indigo-300">Created by Muhammad Imam Suwiji • Copyright © Sie Keguruan 2026</p>
     </footer>
 
+    <!-- FIREBASE & LOGIKA ADMIN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -230,15 +241,17 @@
             { question: "Pembelajaran diferensiasi sering kali disalahpahami oleh sebagian pendidik. Manakah pernyataan berikut yang merupakan MITOS atau KESALAHPAHAMAN tentang pembelajaran diferensiasi?", options: { A: "Pembelajaran diferensiasi berarti guru harus membuat 30 RPP berbeda untuk 30 siswa di kelas.", B: "Pembelajaran diferensiasi menurunkan standar/kriteria ketuntasan bagi siswa yang kurang mampu.", C: "Pembelajaran diferensiasi adalah pendekatan yang memberikan cara berbeda untuk mencapai tujuan pembelajaran yang sama.", D: "Pembelajaran diferensiasi hanya berlaku dan berguna untuk siswa berkebutuhan khusus (ABK).", E: "Pembelajaran diferensiasi memerlukan asesmen berkelanjutan, baik awal maupun formatif." }, keys: ["A", "B", "D"] },
             { question: "Ibu Rahma ingin melakukan diferensiasi lingkungan belajar di kelas 1 SD pada pembelajaran membaca awal. Strategi mana saja yang mendukung diferensiasi lingkungan belajar?", options: { A: "Menyediakan \"Sudut Baca\" (reading corner) yang nyaman dengan bantal duduk untuk membaca mandiri.", B: "Mengatur tata letak meja-kursi yang mudah diubah dari format klasikal ke format diskusi kelompok kecil.", C: "Menyediakan area tenang (quiet area) bagi siswa yang membutuhkan konsentrasi tanpa gangguan suara.", D: "Mematikan seluruh lampu kelas agar siswa berlatih membaca dalam kondisi redup.", E: "Memajang karya seluruh siswa di dinding kelas untuk membangun iklim belajar yang inklusif dan menghargai usaha." }, keys: ["A", "B", "C", "E"] },
             { question: "Manakah indikator yang menunjukkan bahwa seorang guru SD telah menerapkan scaffolding dengan tepat pada kelompok siswa yang mengalami kesulitan belajar (perlu bimbingan)?", options: { A: "Guru langsung memberikan kunci jawaban soal agar siswa bisa cepat selesai.", B: "Guru memberikan pertanyaan pemantik terarah untuk memancing pemikiran siswa secara bertahap.", C: "Guru menyediakan alat bantu visual/konkret saat menjelaskan konsep dasar.", D: "Guru mengurangi tingkat bimbingan secara perlahan seiring meningkatnya kemandirian siswa (fading).", E: "Guru membiarkan siswa mengerjakan sendiri tanpa petunjuk apa pun agar melatih kemandirian." }, keys: ["B", "C", "D"] },
-            { question: "In penyusunan rubrik evaluasi pembelajaran diferensiasi di SD, manakah prinsip-prinsip penilaian yang harus dipegang oleh guru?", options: { A: "Rubrik penilaian harus berfokus pada ketercapaian Tujuan Pembelajaran (TP), bukan pada estetika fisik produk semata.", B: "Siswa yang memilih produk berupa video harus mendapatkan nilai maksimal lebih tinggi daripada yang menggambar poster.", C: "Kriteria penilaian kualitatif (seperti penguasaan konsep dan kelogisan) harus berlaku adil untuk semua moda produk.", D: "Penilaian formatif digunakan untuk memberikan umpan balik perbaikan, bukan sekadar menghitung skor akhir.", E: "Rubrik harus dibuat serumit mungkin agar siswa tidak mudah mendapatkan nilai baik." }, keys: ["A", "C", "D"] }
+            { question: "Dalam penyusunan rubrik evaluasi pembelajaran diferensiasi di SD, manakah prinsip-prinsip penilaian yang harus dipegang oleh guru?", options: { A: "Rubrik penilaian harus berfokus pada ketercapaian Tujuan Pembelajaran (TP), bukan pada estetika fisik produk semata.", B: "Siswa yang memilih produk berupa video harus mendapatkan nilai maksimal lebih tinggi daripada yang menggambar poster.", C: "Kriteria penilaian kualitatif (seperti penguasaan konsep dan kelogisan) harus berlaku adil untuk semua moda produk.", D: "Penilaian formatif digunakan untuk memberikan umpan balik perbaikan, bukan sekadar menghitung skor akhir.", E: "Rubrik harus dibuat serumit mungkin agar siswa tidak mudah mendapatkan nilai baik." }, keys: ["A", "C", "D"] }
         ];
 
         function adminApp() {
             return {
                 soundEnabled: true,
+                bgmEnabled: true,
                 participants: {},
                 gameState: { screen: 'lobby', currentIndex: 0, timeLeft: 30, countdownVal: 3 },
                 timerInterval: null,
+                bgmInterval: null,
 
                 init() {
                     let checkInterval = setInterval(() => {
@@ -253,10 +266,13 @@
                                     if (oldScreen !== data.screen) {
                                         if (data.screen === 'question') {
                                             this.playTensionSound();
+                                            this.startBGM();
                                         } else if (data.screen === 'review') {
                                             this.playReviewSound();
+                                            this.stopBGM();
                                         } else if (data.screen === 'podium') {
                                             this.playPodiumSound();
+                                            this.stopBGM();
                                         }
                                     }
                                 }
@@ -287,6 +303,30 @@
                     } catch (e) {}
                 },
 
+                startBGM() {
+                    if (!this.bgmEnabled || this.bgmInterval) return;
+                    const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
+                    let index = 0;
+                    this.bgmInterval = setInterval(() => {
+                        if (!this.bgmEnabled) return;
+                        this.playTone(notes[index], 'sine', 0.25);
+                        index = (index + 1) % notes.length;
+                    }, 300);
+                },
+
+                stopBGM() {
+                    if (this.bgmInterval) {
+                        clearInterval(this.bgmInterval);
+                        this.bgmInterval = null;
+                    }
+                },
+
+                toggleBGM() {
+                    this.bgmEnabled = !this.bgmEnabled;
+                    if (!this.bgmEnabled) this.stopBGM();
+                    else if (this.gameState.screen === 'question') this.startBGM();
+                },
+
                 playTensionSound() {
                     if (!this.soundEnabled) return;
                     setTimeout(() => this.playTone(250, 'sawtooth', 0.2), 0);
@@ -309,6 +349,7 @@
                 },
 
                 setupAdmin() {
+                    this.stopBGM();
                     if (!window.dbRef) return;
                     const { ref, set } = window.dbRef;
                     set(ref(window.dbRef.db, 'quizState'), { screen: 'lobby', currentIndex: 0, timeLeft: 30, countdownVal: 3 });
@@ -316,6 +357,7 @@
 
                 resetData() {
                     if (confirm('Yakin ingin mereset seluruh data peserta dan kuis dari awal?')) {
+                        this.stopBGM();
                         if (!window.dbRef) return;
                         const { ref, set } = window.dbRef;
                         set(ref(window.dbRef.db, 'quizState'), { screen: 'lobby', currentIndex: 0, timeLeft: 30, countdownVal: 3 });
