@@ -11,6 +11,7 @@
 </head>
 <body class="bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950 text-white min-h-screen flex flex-col" x-data="adminApp()">
 
+    <!-- HEADER ADMIN -->
     <header class="bg-indigo-900/60 backdrop-blur-md border-b border-indigo-700/50 p-4 sm:p-5 flex justify-between items-center shadow-2xl">
         <div class="flex items-center space-x-3">
             <span class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-black px-4 py-2 rounded-2xl text-xl shadow-lg">💻 PANEL ADMIN KUIS</span>
@@ -24,6 +25,7 @@
         </div>
     </header>
 
+    <!-- MAIN ADMIN -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 flex flex-col justify-center">
 
         <!-- LOBBY ADMIN -->
@@ -52,7 +54,7 @@
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
                     <template x-for="p in Object.values(participants)" :key="p.name">
-                        <div class="bg-indigo-900/80 border border-purple-500/40 p-4 rounded-2xl flex flex-col items-center text-center space-y-2 shadow-xl animate-bounce">
+                        <div class="bg-indigo-900/80 border border-purple-500/40 p-4 rounded-2xl flex flex-col items-center text-center space-y-2 shadow-xl">
                             <span class="text-4xl" x-text="p.avatar"></span>
                             <p class="text-xs font-black truncate w-full text-white" x-text="p.name"></p>
                         </div>
@@ -145,7 +147,6 @@
             </div>
 
             <div class="grid grid-cols-3 gap-4 items-end pt-10 max-w-lg mx-auto">
-                <!-- Juara 2 -->
                 <div class="bg-indigo-900/80 border-2 border-slate-300/50 p-5 rounded-3xl flex flex-col items-center space-y-3 pb-8 shadow-2xl">
                     <span class="text-4xl">🥈</span>
                     <span class="text-4xl" x-text="getPodium(1)?.avatar || '👤'"></span>
@@ -154,7 +155,6 @@
                     <div class="w-full bg-slate-400/40 h-20 rounded-2xl flex items-center justify-center font-black text-slate-200 text-lg">2</div>
                 </div>
 
-                <!-- Juara 1 -->
                 <div class="bg-gradient-to-b from-amber-500/30 to-indigo-900/90 border-2 border-amber-400 p-5 rounded-3xl flex flex-col items-center space-y-3 pb-12 shadow-2xl transform -translate-y-6">
                     <span class="text-5xl animate-bounce">👑</span>
                     <span class="text-5xl" x-text="getPodium(0)?.avatar || '👤'"></span>
@@ -163,7 +163,6 @@
                     <div class="w-full bg-amber-500/60 h-32 rounded-2xl flex items-center justify-center font-black text-amber-200 text-xl">1</div>
                 </div>
 
-                <!-- Juara 3 -->
                 <div class="bg-indigo-900/80 border-2 border-amber-600/50 p-5 rounded-3xl flex flex-col items-center space-y-3 pb-6 shadow-2xl">
                     <span class="text-4xl">🥉</span>
                     <span class="text-4xl" x-text="getPodium(2)?.avatar || '👤'"></span>
@@ -182,6 +181,13 @@
 
     </main>
 
+    <!-- FOOTER ADMIN -->
+    <footer class="text-center py-6 text-xs text-indigo-400 border-t border-indigo-900/50 space-y-1">
+        <p>Aplikasi Kuis Interaktif Real-Time • KKG Korwilbiddikbud Kec. Mranggen Kab. Demak</p>
+        <p class="font-semibold text-indigo-300">Created by Muhammad Imam Suwiji • Copyright © Sie Keguruan 2026</p>
+    </footer>
+
+    <!-- FIREBASE & LOGIKA ADMIN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -197,7 +203,7 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        const db = getDatabase(app, "https://kuis-diferensiasi-kkg-9ca65-default-rtdb.firebaseio.com");
         window.dbRef = { ref, set, onValue, update, remove, db };
     </script>
 
@@ -211,7 +217,7 @@
             { question: "Manajemen kelas yang efektif sangat krusial agar pembelajaran diferensiasi di SD berjalan terarah dan kondusif. Manakah praktik manajemen kelas berdiferensiasi yang BENAR?", options: { A: "Menyusun prosedur dan aturan kelas (classroom routines) yang jelas sebelum kegiatan dimulai.", B: "Menggunakan pengelompokan yang dinamis dan fleksibel (flexible grouping), tidak kaku.", C: "Membiarkan siswa berpindah kelompok sesuka hati tanpa aturan waktu.", D: "Menyediakan kegiatan tambatan (anchor activities) bagi siswa yang selesai lebih awal.", E: "Memastikan guru hanya fokus mengajar satu kelompok dan mengabaikan kelompok lain." }, keys: ["A", "B", "D"] },
             { question: "Pembelajaran diferensiasi sering kali disalahpahami oleh sebagian pendidik. Manakah pernyataan berikut yang merupakan MITOS atau KESALAHPAHAMAN tentang pembelajaran diferensiasi?", options: { A: "Pembelajaran diferensiasi berarti guru harus membuat 30 RPP berbeda untuk 30 siswa di kelas.", B: "Pembelajaran diferensiasi menurunkan standar/kriteria ketuntasan bagi siswa yang kurang mampu.", C: "Pembelajaran diferensiasi adalah pendekatan yang memberikan cara berbeda untuk mencapai tujuan pembelajaran yang sama.", D: "Pembelajaran diferensiasi hanya berlaku dan berguna untuk siswa berkebutuhan khusus (ABK).", E: "Pembelajaran diferensiasi memerlukan asesmen berkelanjutan, baik awal maupun formatif." }, keys: ["A", "B", "D"] },
             { question: "Ibu Rahma ingin melakukan diferensiasi lingkungan belajar di kelas 1 SD pada pembelajaran membaca awal. Strategi mana saja yang mendukung diferensiasi lingkungan belajar?", options: { A: "Menyediakan \"Sudut Baca\" (reading corner) yang nyaman dengan bantal duduk untuk membaca mandiri.", B: "Mengatur tata letak meja-kursi yang mudah diubah dari format klasikal ke format diskusi kelompok kecil.", C: "Menyediakan area tenang (quiet area) bagi siswa yang membutuhkan konsentrasi tanpa gangguan suara.", D: "Mematikan seluruh lampu kelas agar siswa berlatih membaca dalam kondisi redup.", E: "Memajang karya seluruh siswa di dinding kelas untuk membangun iklim belajar yang inklusif dan menghargai usaha." }, keys: ["A", "B", "C", "E"] },
-            { question: "Manakah indikator yang menunjukkan bahwa seorang guru SD telah menerapkan scaffolding dengan tepat pada kelompok siswa yang mengalami kesulitan belajar (perlu bimbingan)?", options: { A: "Guru langsung memberikan kunci jawaban soal agar siswa bisa cepat selesai.", B: "Guru memberikan pertanyaan pemantik terarah untuk memancing pemikiran siswa secara bertahap.", C: "Guru menyediakan alat bantu visual/konkret saat menjelaskan konsep dasar.",D: "Guru mengurangi tingkat bimbingan secara perlahan seiring meningkatnya kemandirian siswa (fading).", E: "Guru membiarkan siswa mengerjakan sendiri tanpa petunjuk apa pun agar melatih kemandirian." }, keys: ["B", "C", "D"] },
+            { question: "Manakah indikator yang menunjukkan bahwa seorang guru SD telah menerapkan scaffolding dengan tepat pada kelompok siswa yang mengalami kesulitan belajar (perlu bimbingan)?", options: { A: "Guru langsung memberikan kunci jawaban soal agar siswa bisa cepat selesai.", B: "Guru memberikan pertanyaan pemantik terarah untuk memancing pemikiran siswa secara bertahap.", C: "Guru menyediakan alat bantu visual/konkret saat menjelaskan konsep dasar.", D: "Guru mengurangi tingkat bimbingan secara perlahan seiring meningkatnya kemandirian siswa (fading).", E: "Guru membiarkan siswa mengerjakan sendiri tanpa petunjuk apa pun agar melatih kemandirian." }, keys: ["B", "C", "D"] },
             { question: "Dalam penyusunan rubrik evaluasi pembelajaran diferensiasi di SD, manakah prinsip-prinsip penilaian yang harus dipegang oleh guru?", options: { A: "Rubrik penilaian harus berfokus pada ketercapaian Tujuan Pembelajaran (TP), bukan pada estetika fisik produk semata.", B: "Siswa yang memilih produk berupa video harus mendapatkan nilai maksimal lebih tinggi daripada yang menggambar poster.", C: "Kriteria penilaian kualitatif (seperti penguasaan konsep dan kelogisan) harus berlaku adil untuk semua moda produk.", D: "Penilaian formatif digunakan untuk memberikan umpan balik perbaikan, bukan sekadar menghitung skor akhir.", E: "Rubrik harus dibuat serumit mungkin agar siswa tidak mudah mendapatkan nilai baik." }, keys: ["A", "C", "D"] }
         ];
 
