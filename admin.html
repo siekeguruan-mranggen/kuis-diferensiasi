@@ -3,211 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin - Kuis Pembelajaran Diferensiasi</title>
+    <title>Futuristic Admin - Kuis Pembelajaran Diferensiasi</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', sans-serif; overflow: hidden; }
+        body { font-family: 'Poppins', sans-serif; overflow: hidden; background-color: #030712; }
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+        .neon-box { box-shadow: 0 0 25px rgba(168, 85, 247, 0.4); border: 1px solid rgba(236, 72, 153, 0.5); }
+        .neon-text { text-shadow: 0 0 15px rgba(236, 72, 153, 0.7); }
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950 text-white h-screen w-screen flex flex-col justify-between overflow-hidden p-3 sm:p-4" x-data="adminApp()">
+<body class="bg-slate-950 text-white h-screen w-screen flex flex-col justify-between overflow-hidden p-3 sm:p-4 relative" x-data="adminApp()">
 
-    <!-- HEADER ADMIN (Kompak & Elegan) -->
-    <header class="bg-indigo-900/60 backdrop-blur-md border border-indigo-700/50 px-4 py-2.5 rounded-2xl flex justify-between items-center shadow-xl shrink-0">
+    <!-- Elemen Audio Musik Sendiri (Opsional: Letakkan file .mp3 di GitHub Anda) -->
+    <audio id="customBGM" src="musik-turnamen.mp3" loop></audio>
+
+    <!-- HEADER FUTURISTIK -->
+    <header class="bg-slate-900/80 backdrop-blur-xl border border-purple-500/30 px-5 py-3 rounded-2xl flex justify-between items-center shadow-2xl neon-box shrink-0 z-10">
         <div class="flex items-center space-x-3">
-            <span class="bg-gradient-to-r from-pink-500 to-indigo-600 text-white font-black px-3 py-1.5 rounded-xl text-sm shadow">💻 ADMIN PROYEKTOR</span>
-            <span class="text-[11px] bg-purple-900/80 text-purple-200 border border-purple-500/30 px-2.5 py-1 rounded-full font-semibold hidden sm:inline-block">Modul 4: Diferensiasi</span>
+            <span class="bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 text-white font-black px-4 py-1.5 rounded-xl text-sm shadow font-cyber tracking-wider">⚡ CYBER-ADMIN PROYEKTOR</span>
+            <span class="text-[11px] bg-purple-950 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full font-semibold hidden sm:inline-block font-cyber">MODUL 4: DIFERENSIASI</span>
         </div>
-        <div class="flex items-center space-x-2">
-            <button @click="resetData()" class="bg-red-700 hover:bg-red-600 px-2.5 py-1.5 rounded-lg text-xs font-bold transition shadow">🗑️ Reset</button>
-            <button @click="toggleBGM()" class="bg-purple-800 hover:bg-purple-700 px-2.5 py-1.5 rounded-lg text-xs font-bold transition">
-                <span x-text="bgmEnabled ? '🎵 Musik: ON' : '🔇 Musik: OFF'"></span>
+        <div class="flex items-center space-x-2.5">
+            <button @click="resetData()" class="bg-rose-900/80 hover:bg-rose-800 text-rose-200 border border-rose-500/40 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow font-cyber">🗑️ RESET</button>
+            <button @click="toggleBGM()" class="bg-purple-900/80 hover:bg-purple-800 text-purple-200 border border-purple-500/40 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow font-cyber">
+                <span x-text="bgmEnabled ? '🎵 BGM: ON' : '🔇 BGM: OFF'"></span>
             </button>
-            <button @click="toggleAudio()" class="bg-indigo-800 hover:bg-indigo-700 px-2.5 py-1.5 rounded-lg text-xs font-bold transition">
+            <button @click="toggleAudio()" class="bg-cyan-950 hover:bg-cyan-900 text-cyan-200 border border-cyan-500/40 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow font-cyber">
                 <span x-text="soundEnabled ? '🔊 SFX: ON' : '🔇 SFX: OFF'"></span>
             </button>
         </div>
     </header>
 
-    <!-- MAIN VIEWPORT (Pas 1 Layar Penuh) -->
-    <main class="flex-1 max-w-7xl w-full mx-auto my-2 flex flex-col justify-center items-center overflow-hidden">
+    <!-- MAIN VIEWPORT FUTURISTIK (1 Layar Penuh Tanpa Scroll) -->
+    <main class="flex-1 max-w-7xl w-full mx-auto my-2 flex flex-col justify-center items-center overflow-hidden z-10">
 
-        <!-- LOBBY ADMIN -->
+        <!-- LOBBY ADMIN FUTURISTIK -->
         <div x-show="gameState.screen === 'lobby'" class="w-full h-full flex flex-col justify-between space-y-3 py-1" x-cloak>
-            <div class="bg-gradient-to-r from-purple-900/80 via-indigo-900/80 to-pink-900/80 border border-purple-500/40 px-6 py-5 rounded-2xl shadow-2xl flex justify-between items-center gap-4 backdrop-blur-xl shrink-0">
-                <div class="space-y-1">
-                    <span class="bg-pink-500/20 text-pink-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-pink-500/30 uppercase">Ruang Tunggu Utama</span>
-                    <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white">SIAPKAN PESERTA ANDA!</h1>
-                    <p class="text-indigo-200 text-xs">Bagikan tautan ke HP peserta. Tekan hitung mundur untuk memulai turnamen.</p>
+            <div class="bg-gradient-to-r from-purple-950/90 via-slate-900/90 to-pink-950/90 border border-pink-500/40 px-8 py-6 rounded-3xl shadow-2xl flex justify-between items-center gap-4 backdrop-blur-2xl shrink-0 neon-box">
+                <div class="space-y-1.5">
+                    <span class="bg-pink-500/20 text-pink-400 text-[10px] font-bold px-3 py-1 rounded-full border border-pink-500/40 font-cyber uppercase tracking-widest">Sistem Siap Tempur</span>
+                    <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-white font-cyber neon-text">ZONA LOBBY TURNAMEN</h1>
+                    <p class="text-slate-300 text-xs">Pindai atau bagikan tautan peserta. Sistem real-time siap mendeteksi kehadiran peserta KKG.</p>
                 </div>
-                <div class="flex gap-2 shrink-0">
-                    <button @click="startCountdown()" class="px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
-                        ⏱️ Hitung Mundur (3s)
+                <div class="flex gap-3 shrink-0">
+                    <button @click="startCountdown()" class="px-6 py-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 font-black text-xs rounded-2xl shadow-xl transition transform hover:scale-105 font-cyber tracking-wide border border-amber-300/50">
+                        ⏱️ HITUNG MUNDUR (3s)
                     </button>
-                    <button @click="startQuiz()" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
-                        🚀 Mulai Langsung
+                    <button @click="startQuiz()" class="px-7 py-4 bg-gradient-to-r from-cyan-500 to-emerald-600 hover:from-cyan-400 font-black text-xs rounded-2xl shadow-xl transition transform hover:scale-105 font-cyber tracking-wide border border-cyan-300/50">
+                        🚀 MULAI LANGSUNG
                     </button>
                 </div>
             </div>
 
-            <!-- Peserta Bergabung Grid Terbatas dalam 1 Layar -->
-            <div class="bg-indigo-950/50 border border-indigo-800/80 p-5 rounded-2xl shadow-2xl backdrop-blur-md flex-1 flex flex-col overflow-hidden">
-                <div class="flex justify-between items-center mb-3 pb-2 border-b border-indigo-900 shrink-0">
-                    <h3 class="font-black text-sm text-white">👥 Peserta Bergabung (<span x-text="Object.keys(participants).length"></span>)</h3>
-                    <span class="text-[11px] text-emerald-400 font-bold flex items-center gap-1.5 bg-emerald-950/60 px-2.5 py-1 rounded-lg border border-emerald-500/30">● Real-Time Sinkron</span>
+            <!-- Grid Peserta Bergabung Gaya Grid Cyber -->
+            <div class="bg-slate-900/60 border border-purple-500/30 p-6 rounded-3xl shadow-2xl backdrop-blur-xl flex-1 flex flex-col overflow-hidden neon-box">
+                <div class="flex justify-between items-center mb-4 pb-2 border-b border-purple-500/20 shrink-0">
+                    <h3 class="font-black text-sm text-white font-cyber tracking-wider flex items-center gap-2">
+                        <span>👥 PESERTA TERHUBUNG</span>
+                        <span class="bg-pink-600 text-white text-xs px-2.5 py-0.5 rounded-full" x-text="Object.keys(participants).length"></span>
+                    </h3>
+                    <span class="text-[11px] text-cyan-400 font-bold flex items-center gap-2 bg-cyan-950/80 px-3 py-1 rounded-xl border border-cyan-500/40 font-cyber">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> KONEKSI SECURE
+                    </span>
                 </div>
-                <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 gap-3 overflow-y-auto max-h-[50vh] pr-1">
+                <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 gap-3.5 overflow-y-auto max-h-[48vh] pr-1">
                     <template x-for="p in Object.values(participants)" :key="p.name">
-                        <div class="bg-indigo-900/80 border border-purple-500/40 p-2.5 rounded-xl flex flex-col items-center text-center space-y-1 shadow-lg">
-                            <span class="text-3xl" x-text="p.avatar"></span>
-                            <p class="text-[11px] font-black truncate w-full text-white" x-text="p.name"></p>
+                        <div class="bg-slate-950/80 border border-purple-500/40 p-3 rounded-2xl flex flex-col items-center text-center space-y-1 shadow-xl transform transition hover:scale-105">
+                            <span class="text-4xl" x-text="p.avatar"></span>
+                            <p class="text-[11px] font-black truncate w-full text-cyan-200 font-cyber" x-text="p.name"></p>
                         </div>
                     </template>
                 </div>
-                <div x-show="Object.keys(participants).length === 0" class="m-auto text-indigo-400 text-xs text-center py-6">
-                    Belum ada peserta yang bergabung lewat HP.
+                <div x-show="Object.keys(participants).length === 0" class="m-auto text-slate-400 text-xs text-center py-8 font-cyber">
+                    MENUNGGU PESERTA MASUK DARI PERANGKAT HP...
                 </div>
             </div>
         </div>
 
-        <!-- COUNTDOWN ADMIN -->
+        <!-- COUNTDOWN FUTURISTIK -->
         <div x-show="gameState.screen === 'countdown'" class="text-center space-y-4 my-auto" x-cloak>
-            <p class="text-indigo-300 text-lg font-bold uppercase tracking-widest">Kuis Akan Segera Dimulai...</p>
-            <div class="text-8xl sm:text-9xl font-black bg-gradient-to-r from-pink-400 to-amber-300 bg-clip-text text-transparent animate-bounce" x-text="gameState.countdownVal"></div>
+            <p class="text-cyan-400 text-xl font-bold uppercase tracking-widest font-cyber">SYSTEM COUNTDOWN ACTIVE</p>
+            <div class="text-9xl font-black bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent animate-pulse font-cyber neon-text" x-text="gameState.countdownVal"></div>
         </div>
 
-        <!-- PERTANYAAN ADMIN (Padat 1 Layar) -->
-        <div x-show="gameState.screen === 'question'" class="space-y-4 max-w-4xl w-full mx-auto my-auto" x-cloak>
-            <div class="flex justify-between items-center bg-indigo-900/60 border border-indigo-800 px-5 py-3 rounded-2xl shadow-lg">
-                <span class="bg-purple-600 text-white text-xs font-black px-3.5 py-1.5 rounded-xl" x-text="'Soal ' + (gameState.currentIndex + 1) + ' / 10'"></span>
-                <div class="bg-indigo-950 border border-pink-500 px-4 py-1.5 rounded-2xl font-mono font-black text-pink-400 text-base">
-                    ⏳ Sisa Waktu: <span x-text="gameState.timeLeft"></span>s
+        <!-- PERTANYAAN ADMIN FUTURISTIK (1 Layar Penuh) -->
+        <div x-show="gameState.screen === 'question'" class="space-y-4 max-w-5xl w-full mx-auto my-auto" x-cloak>
+            <div class="flex justify-between items-center bg-slate-900/80 border border-purple-500/40 px-6 py-3.5 rounded-2xl shadow-xl">
+                <span class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-black px-4 py-2 rounded-xl font-cyber" x-text="'SOAL ' + (gameState.currentIndex + 1) + ' / 10'"></span>
+                <div class="bg-slate-950 border border-cyan-500/60 px-5 py-2 rounded-2xl font-mono font-black text-cyan-300 text-base font-cyber">
+                    ⏱️ WAKTU: <span x-text="gameState.timeLeft"></span>s
                 </div>
             </div>
 
-            <div class="bg-indigo-900/80 border border-indigo-700 p-6 rounded-2xl shadow-2xl space-y-2">
-                <h2 class="text-base sm:text-lg font-black text-white leading-snug" x-text="currentQuestion.question"></h2>
-                <span class="inline-block bg-pink-500/20 text-pink-300 text-[11px] font-bold px-3 py-1 rounded-lg border border-pink-500/30">
-                    💡 Petunjuk: Pilih 2 atau lebih jawaban yang benar!
+            <div class="bg-slate-900/90 border border-pink-500/40 p-6 rounded-3xl shadow-2xl space-y-2.5 neon-box">
+                <h2 class="text-lg sm:text-xl font-black text-white leading-snug font-cyber" x-text="currentQuestion.question"></h2>
+                <span class="inline-block bg-pink-500/20 text-pink-300 text-xs font-bold px-3 py-1 rounded-xl border border-pink-500/40 font-cyber">
+                    ⚡ PILIH 2 ATAU LEBIH JAWABAN YANG BENAR
                 </span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <template x-for="(optText, optKey) in currentQuestion.options">
-                    <div class="p-3.5 rounded-xl border bg-indigo-900/40 border-indigo-800 flex items-start space-x-3 shadow">
-                        <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-sm bg-indigo-950 text-pink-300 border border-indigo-700 shrink-0" x-text="optKey"></span>
-                        <span class="text-xs font-semibold leading-relaxed flex-1" x-text="optText"></span>
+                    <div class="p-4 rounded-2xl border bg-slate-900/60 border-purple-500/30 flex items-start space-x-3.5 shadow-xl">
+                        <span class="w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm bg-slate-950 text-cyan-300 border border-cyan-500/50 shrink-0 font-cyber" x-text="optKey"></span>
+                        <span class="text-xs font-semibold leading-relaxed flex-1 text-slate-200" x-text="optText"></span>
                     </div>
                 </template>
             </div>
 
-            <div class="flex justify-between items-center bg-indigo-950/80 border border-indigo-900 px-4 py-3 rounded-xl shadow-lg">
-                <p class="text-[11px] text-indigo-300">Peserta sedang menjawab di perangkat mereka...</p>
-                <button @click="forceTimeOut()" class="px-4 py-2 bg-pink-700 hover:bg-pink-600 text-xs font-black rounded-xl shadow transition">
-                    Tutup Soal & Lihat Jawaban ⏭️
+            <div class="flex justify-between items-center bg-slate-900/80 border border-slate-800 px-5 py-3 rounded-2xl shadow-xl">
+                <p class="text-xs text-slate-400 font-cyber">Sistem memantau input jawaban peserta secara real-time...</p>
+                <button @click="forceTimeOut()" class="px-5 py-2.5 bg-pink-600 hover:bg-pink-500 text-xs font-black rounded-xl shadow-lg transition font-cyber">
+                    TUTUP SOAL & REVIEW ⏭️
                 </button>
             </div>
         </div>
 
-        <!-- SESI REVIEW JAWABAN BENAR -->
-        <div x-show="gameState.screen === 'review'" class="space-y-4 max-w-3xl w-full mx-auto my-auto text-center" x-cloak>
-            <div class="bg-gradient-to-r from-emerald-900/90 to-teal-900/90 border-2 border-emerald-500 p-6 rounded-3xl shadow-2xl space-y-3">
-                <span class="text-4xl animate-bounce inline-block">✅</span>
-                <h2 class="text-xl sm:text-2xl font-black text-emerald-300">WAKTU HABIS! KUNCI JAWABAN BENAR:</h2>
-                <div class="flex flex-wrap justify-center gap-2.5 pt-1">
+        <!-- SESI REVIEW JAWABAN FUTURISTIK -->
+        <div x-show="gameState.screen === 'review'" class="space-y-4 max-w-4xl w-full mx-auto my-auto text-center" x-cloak>
+            <div class="bg-gradient-to-r from-emerald-950/90 via-slate-900/90 to-teal-950/90 border-2 border-emerald-500 p-8 rounded-3xl shadow-2xl space-y-4 neon-box">
+                <span class="text-5xl animate-bounce inline-block">🎯</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-emerald-300 font-cyber">KUNCI JAWABAN TEPAT:</h2>
+                <div class="flex flex-wrap justify-center gap-3 pt-2">
                     <template x-for="k in currentQuestion.keys">
-                        <span class="w-12 h-12 rounded-xl bg-emerald-500 text-indigo-950 text-xl font-black flex items-center justify-center shadow-lg border-2 border-white" x-text="k"></span>
+                        <span class="w-14 h-14 rounded-2xl bg-emerald-500 text-slate-950 text-2xl font-black flex items-center justify-center shadow-lg border-2 border-white font-cyber" x-text="k"></span>
                     </template>
                 </div>
-                <p class="text-[11px] text-emerald-200">Menuju papan skor peserta terbaik...</p>
+                <p class="text-xs text-emerald-200 font-cyber pt-2">Menganalisis perolehan skor peserta...</p>
             </div>
-            <button @click="goToLeaderboard()" class="px-7 py-3 bg-gradient-to-r from-purple-600 to-pink-600 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
-                Lihat Papan Skor 10 Besar 📊
+            <button @click="goToLeaderboard()" class="px-8 py-4 bg-gradient-to-r from-cyan-600 to-purple-600 font-black text-xs rounded-2xl shadow-xl transition transform hover:scale-105 font-cyber">
+                TAMPILKAN 10 BESAR TERBAIK 📊
             </button>
         </div>
 
-        <!-- LEADERBOARD 10 BESAR (Muat 1 Layar) -->
+        <!-- LEADERBOARD KAHOOT STYLE (Futuristik 1 Layar) -->
         <div x-show="gameState.screen === 'leaderboard'" class="space-y-3 max-w-2xl w-full mx-auto my-auto" x-cloak>
-            <div class="text-center space-y-0.5">
-                <h2 class="text-2xl font-black bg-gradient-to-r from-amber-300 via-pink-400 to-purple-300 bg-clip-text text-transparent">
-                    TOP 10 PERINGKAT TERBAIK
+            <div class="text-center space-y-1">
+                <h2 class="text-2xl sm:text-3xl font-black bg-gradient-to-r from-amber-300 via-pink-400 to-cyan-300 bg-clip-text text-transparent font-cyber neon-text">
+                    TOP 10 LEADERBOARD
                 </h2>
-                <p class="text-[11px] text-indigo-300" x-text="'Setelah Pertanyaan ke-' + (gameState.currentIndex + 1)"></p>
+                <p class="text-xs text-cyan-300 font-cyber" x-text="'SETELAH PERTANYAAN KE-' + (gameState.currentIndex + 1)"></p>
             </div>
 
-            <div class="bg-indigo-900/60 border border-purple-500/40 p-4 rounded-2xl shadow-2xl space-y-2 max-h-[55vh] overflow-y-auto">
+            <div class="bg-slate-900/80 border border-purple-500/40 p-4 rounded-2xl shadow-2xl space-y-2 max-h-[55vh] overflow-y-auto neon-box">
                 <template x-for="(lead, idx) in getTop10()" :key="idx">
-                    <div class="flex items-center justify-between p-2.5 rounded-xl border transition shadow-md"
-                        :class="idx === 0 ? 'bg-amber-500/20 border-amber-400 text-amber-200' : (idx === 1 ? 'bg-slate-400/20 border-slate-300 text-slate-200' : (idx === 2 ? 'bg-amber-700/20 border-amber-600 text-amber-300' : 'bg-indigo-950/80 border-indigo-800 text-indigo-200'))">
+                    <div class="flex items-center justify-between p-3 rounded-xl border transition shadow-md font-cyber"
+                        :class="idx === 0 ? 'bg-amber-500/20 border-amber-400 text-amber-200' : (idx === 1 ? 'bg-slate-400/20 border-slate-300 text-slate-200' : (idx === 2 ? 'bg-amber-700/20 border-amber-600 text-amber-300' : 'bg-slate-950/80 border-purple-500/30 text-cyan-200'))">
                         <div class="flex items-center space-x-3">
-                            <span class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs"
-                                :class="idx === 0 ? 'bg-amber-400 text-indigo-950' : (idx === 1 ? 'bg-slate-300 text-indigo-950' : (idx === 2 ? 'bg-amber-600 text-white' : 'bg-indigo-900 text-indigo-300'))"
+                            <span class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shadow"
+                                :class="idx === 0 ? 'bg-amber-400 text-slate-950' : (idx === 1 ? 'bg-slate-300 text-slate-950' : (idx === 2 ? 'bg-amber-600 text-white' : 'bg-purple-900 text-cyan-300'))"
                                 x-text="idx + 1"></span>
                             <span class="text-2xl" x-text="lead.avatar"></span>
                             <span class="font-black text-xs sm:text-sm" x-text="lead.name"></span>
                         </div>
-                        <div class="font-mono font-black text-pink-400 text-xs sm:text-sm" x-text="lead.score + ' Poin'"></div>
+                        <div class="font-mono font-black text-pink-400 text-xs sm:text-sm" x-text="lead.score + ' PTS'"></div>
                     </div>
                 </template>
             </div>
 
             <div class="text-center pt-1">
-                <button @click="nextQuestion()" class="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
-                    Lanjut ke Soal Berikutnya ➡️
+                <button @click="nextQuestion()" class="px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-emerald-600 hover:from-cyan-400 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105 font-cyber">
+                    LANJUT SOAL BERIKUTNYA ➡️
                 </button>
             </div>
         </div>
 
-        <!-- PODIUM AKHIR 1, 2, 3 (Muat 1 Layar) -->
+        <!-- PODIUM AKHIR 1, 2, 3 (Futuristik) -->
         <div x-show="gameState.screen === 'podium'" class="space-y-4 max-w-3xl w-full mx-auto my-auto text-center" x-cloak>
             <div class="space-y-1">
-                <h1 class="text-3xl sm:text-4xl font-black bg-gradient-to-r from-amber-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-                    🏆 PODIUM JUARA UTAMA 🏆
+                <h1 class="text-3xl sm:text-4xl font-black bg-gradient-to-r from-amber-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent font-cyber neon-text">
+                    🏆 HALL OF FAME PODIUM 🏆
                 </h1>
-                <p class="text-indigo-200 text-xs">Hasil Akhir Evaluasi Modul 4: Strategi Pembelajaran Diferensiasi</p>
+                <p class="text-slate-300 text-xs font-cyber">HASIL AKHIR EVALUASI MODUL 4 PEMBELAJARAN DIFERENSIASI</p>
             </div>
 
             <div class="grid grid-cols-3 gap-3 items-end pt-4 max-w-md mx-auto">
-                <div class="bg-indigo-900/80 border border-slate-300/50 p-3 rounded-2xl flex flex-col items-center space-y-2 pb-5 shadow-2xl">
+                <div class="bg-slate-900/90 border border-slate-400/50 p-3 rounded-2xl flex flex-col items-center space-y-2 pb-5 shadow-2xl">
                     <span class="text-3xl">🥈</span>
                     <span class="text-3xl" x-text="getPodium(1)?.avatar || '👤'"></span>
-                    <p class="font-black text-[11px] truncate max-w-[80px]" x-text="getPodium(1)?.name || '-'"></p>
-                    <span class="text-[10px] font-mono text-pink-300 font-black" x-text="(getPodium(1)?.score || 0) + ' Poin'"></span>
-                    <div class="w-full bg-slate-400/40 h-14 rounded-xl flex items-center justify-center font-black text-slate-200 text-sm">2</div>
+                    <p class="font-black text-[11px] truncate max-w-[80px] font-cyber text-slate-200" x-text="getPodium(1)?.name || '-'"></p>
+                    <span class="text-[10px] font-mono text-pink-400 font-black" x-text="(getPodium(1)?.score || 0) + ' PTS'"></span>
+                    <div class="w-full bg-slate-700/50 h-14 rounded-xl flex items-center justify-center font-black text-slate-200 text-sm font-cyber">2</div>
                 </div>
 
-                <div class="bg-gradient-to-b from-amber-500/30 to-indigo-900/90 border-2 border-amber-400 p-3 rounded-2xl flex flex-col items-center space-y-2 pb-8 shadow-2xl transform -translate-y-4">
+                <div class="bg-gradient-to-b from-amber-500/30 to-slate-900/95 border-2 border-amber-400 p-3 rounded-2xl flex flex-col items-center space-y-2 pb-8 shadow-2xl transform -translate-y-4 neon-box">
                     <span class="text-4xl animate-bounce">👑</span>
                     <span class="text-4xl" x-text="getPodium(0)?.avatar || '👤'"></span>
-                    <p class="font-black text-xs truncate max-w-[80px]" x-text="getPodium(0)?.name || '-'"></p>
-                    <span class="text-[10px] font-mono text-amber-300 font-black" x-text="(getPodium(0)?.score || 0) + ' Poin'"></span>
-                    <div class="w-full bg-amber-500/60 h-24 rounded-xl flex items-center justify-center font-black text-amber-200 text-base">1</div>
+                    <p class="font-black text-xs truncate max-w-[80px] font-cyber text-amber-200" x-text="getPodium(0)?.name || '-'"></p>
+                    <span class="text-[10px] font-mono text-amber-300 font-black" x-text="(getPodium(0)?.score || 0) + ' PTS'"></span>
+                    <div class="w-full bg-amber-500/60 h-24 rounded-xl flex items-center justify-center font-black text-amber-100 text-base font-cyber">1</div>
                 </div>
 
-                <div class="bg-indigo-900/80 border border-amber-600/50 p-3 rounded-2xl flex flex-col items-center space-y-2 pb-4 shadow-2xl">
+                <div class="bg-slate-900/90 border border-amber-600/50 p-3 rounded-2xl flex flex-col items-center space-y-2 pb-4 shadow-2xl">
                     <span class="text-3xl">🥉</span>
                     <span class="text-3xl" x-text="getPodium(2)?.avatar || '👤'"></span>
-                    <p class="font-black text-[11px] truncate max-w-[80px]" x-text="getPodium(2)?.name || '-'"></p>
-                    <span class="text-[10px] font-mono text-pink-300 font-black" x-text="(getPodium(2)?.score || 0) + ' Poin'"></span>
-                    <div class="w-full bg-amber-700/40 h-10 rounded-xl flex items-center justify-center font-black text-amber-400 text-sm">3</div>
+                    <p class="font-black text-[11px] truncate max-w-[80px] font-cyber text-slate-200" x-text="getPodium(2)?.name || '-'"></p>
+                    <span class="text-[10px] font-mono text-pink-400 font-black" x-text="(getPodium(2)?.score || 0) + ' PTS'"></span>
+                    <div class="w-full bg-amber-900/40 h-10 rounded-xl flex items-center justify-center font-black text-amber-400 text-sm font-cyber">3</div>
                 </div>
             </div>
 
             <div class="pt-2">
-                <button @click="setupAdmin()" class="px-7 py-3 bg-gradient-to-r from-pink-600 to-purple-600 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105">
-                    Ulangi Kuis Dari Awal 🔄
+                <button @click="setupAdmin()" class="px-7 py-3 bg-gradient-to-r from-pink-600 to-purple-600 font-black text-xs rounded-xl shadow-xl transition transform hover:scale-105 font-cyber">
+                    RESTART TURNAMEN 🔄
                 </button>
             </div>
         </div>
 
     </main>
 
-    <!-- FOOTER ADMIN (Kompak) -->
-    <footer class="text-center py-2 text-[11px] text-indigo-400 border-t border-indigo-900/50 shrink-0 space-y-0.5">
+    <!-- FOOTER ADMIN -->
+    <footer class="text-center py-2 text-[11px] text-slate-400 border-t border-purple-500/20 shrink-0 space-y-0.5 font-cyber">
         <p>Aplikasi Kuis Interaktif Real-Time • KKG Korwilbiddikbud Kec. Mranggen Kab. Demak</p>
-        <p class="font-semibold text-indigo-300">Created by Muhammad Imam Suwiji • Copyright © Sie Keguruan 2026</p>
+        <p class="font-semibold text-cyan-400">Created by Muhammad Imam Suwiji • Copyright © Sie Keguruan 2026</p>
     </footer>
 
     <!-- FIREBASE & LOGIKA ADMIN -->
@@ -251,7 +262,6 @@
                 participants: {},
                 gameState: { screen: 'lobby', currentIndex: 0, timeLeft: 30, countdownVal: 3 },
                 timerInterval: null,
-                bgmInterval: null,
 
                 init() {
                     let checkInterval = setInterval(() => {
@@ -264,15 +274,14 @@
                                     let oldScreen = this.gameState.screen;
                                     this.gameState = data;
                                     if (oldScreen !== data.screen) {
+                                        const bgm = document.getElementById('customBGM');
                                         if (data.screen === 'question') {
                                             this.playTensionSound();
-                                            this.startBGM();
-                                        } else if (data.screen === 'review') {
-                                            this.playReviewSound();
-                                            this.stopBGM();
-                                        } else if (data.screen === 'podium') {
-                                            this.playPodiumSound();
-                                            this.stopBGM();
+                                            if (this.bgmEnabled && bgm) bgm.play().catch(e=>{});
+                                        } else if (data.screen === 'review' || data.screen === 'podium') {
+                                            if (data.screen === 'review') this.playReviewSound();
+                                            else this.playPodiumSound();
+                                            if (bgm) { bgm.pause(); bgm.currentTime = 0; }
                                         }
                                     }
                                 }
@@ -303,28 +312,13 @@
                     } catch (e) {}
                 },
 
-                startBGM() {
-                    if (!this.bgmEnabled || this.bgmInterval) return;
-                    const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
-                    let index = 0;
-                    this.bgmInterval = setInterval(() => {
-                        if (!this.bgmEnabled) return;
-                        this.playTone(notes[index], 'sine', 0.25);
-                        index = (index + 1) % notes.length;
-                    }, 300);
-                },
-
-                stopBGM() {
-                    if (this.bgmInterval) {
-                        clearInterval(this.bgmInterval);
-                        this.bgmInterval = null;
-                    }
-                },
-
                 toggleBGM() {
                     this.bgmEnabled = !this.bgmEnabled;
-                    if (!this.bgmEnabled) this.stopBGM();
-                    else if (this.gameState.screen === 'question') this.startBGM();
+                    const bgm = document.getElementById('customBGM');
+                    if (bgm) {
+                        if (!this.bgmEnabled) bgm.pause();
+                        else if (this.gameState.screen === 'question') bgm.play().catch(e=>{});
+                    }
                 },
 
                 playTensionSound() {
@@ -349,7 +343,8 @@
                 },
 
                 setupAdmin() {
-                    this.stopBGM();
+                    const bgm = document.getElementById('customBGM');
+                    if (bgm) { bgm.pause(); bgm.currentTime = 0; }
                     if (!window.dbRef) return;
                     const { ref, set } = window.dbRef;
                     set(ref(window.dbRef.db, 'quizState'), { screen: 'lobby', currentIndex: 0, timeLeft: 30, countdownVal: 3 });
@@ -357,7 +352,8 @@
 
                 resetData() {
                     if (confirm('Yakin ingin mereset seluruh data peserta dan kuis dari awal?')) {
-                        this.stopBGM();
+                        const bgm = document.getElementById('customBGM');
+                        if (bgm) { bgm.pause(); bgm.currentTime = 0; }
                         if (!window.dbRef) return;
                         const { ref, set } = window.dbRef;
                         set(ref(window.dbRef.db, 'quizState'), { screen: 'lobby', currentIndex: 0, timeLeft: 30, countdownVal: 3 });
