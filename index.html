@@ -16,9 +16,14 @@
             <span class="bg-gradient-to-r from-pink-600 to-purple-600 text-white font-extrabold px-3 py-1.5 rounded-xl text-lg shadow">📱 KUIS PESERTA</span>
             <span class="text-xs bg-indigo-800 text-indigo-300 px-2.5 py-1 rounded-full">Mode HP</span>
         </div>
-        <button @click="toggleAudio()" class="bg-indigo-800 hover:bg-indigo-700 px-3 py-1.5 rounded-lg text-xs font-semibold">
-            <span x-text="soundEnabled ? '🔊 Sound: ON' : '🔇 Sound: OFF'"></span>
-        </button>
+        <div class="flex items-center space-x-2">
+            <button @click="toggleBGM()" class="bg-purple-800 hover:bg-purple-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold">
+                <span x-text="bgmEnabled ? '🎵' : '🔇'"></span>
+            </button>
+            <button @click="toggleAudio()" class="bg-indigo-800 hover:bg-indigo-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold">
+                <span x-text="soundEnabled ? '🔊' : '🔇'"></span>
+            </button>
+        </div>
     </header>
 
     <main class="flex-1 max-w-md w-full mx-auto p-4 flex flex-col justify-center">
@@ -163,6 +168,7 @@
             return {
                 view: 'login',
                 soundEnabled: true,
+                bgmEnabled: true,
                 participantName: '',
                 selectedAvatar: '🦊',
                 avatars: ['🦊', '🐼', '🦁', '🐯', '🐰', '🐨', '🦄', '🐲', '🚀', '⭐', '⚡', '🔥'],
@@ -171,6 +177,7 @@
                 gameState: { screen: 'lobby', currentIndex: 0, timeLeft: 30 },
                 selectedOptions: [],
                 hasSubmitted: false,
+                bgmInterval: null,
 
                 init() {
                     let checkInterval = setInterval(() => {
@@ -185,12 +192,15 @@
                                     if (oldScreen !== data.screen) {
                                         if (data.screen === 'question') {
                                             this.playTensionSound();
+                                            this.startBGM();
                                             this.selectedOptions = [];
                                             this.hasSubmitted = false;
                                         } else if (data.screen === 'review') {
                                             this.playReviewSound();
+                                            this.stopBGM();
                                         } else if (data.screen === 'podium') {
                                             this.playPodiumSound();
+                                            this.stopBGM();
                                         }
                                     }
                                 }
@@ -214,6 +224,30 @@
                         osc.start();
                         osc.stop(ctx.currentTime + duration);
                     } catch (e) {}
+                },
+
+                startBGM() {
+                    if (!this.bgmEnabled || this.bgmInterval) return;
+                    const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
+                    let index = 0;
+                    this.bgmInterval = setInterval(() => {
+                        if (!this.bgmEnabled) return;
+                        this.playTone(notes[index], 'sine', 0.25);
+                        index = (index + 1) % notes.length;
+                    }, 300);
+                },
+
+                stopBGM() {
+                    if (this.bgmInterval) {
+                        clearInterval(this.bgmInterval);
+                        this.bgmInterval = null;
+                    }
+                },
+
+                toggleBGM() {
+                    this.bgmEnabled = !this.bgmEnabled;
+                    if (!this.bgmEnabled) this.stopBGM();
+                    else if (this.gameState.screen === 'question') this.startBGM();
                 },
 
                 playTensionSound() {
