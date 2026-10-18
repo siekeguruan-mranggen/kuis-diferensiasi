@@ -11,7 +11,6 @@
 </head>
 <body class="bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950 text-white min-h-screen flex flex-col" x-data="adminApp()">
 
-    <!-- HEADER ADMIN -->
     <header class="bg-indigo-900/60 backdrop-blur-md border-b border-indigo-700/50 p-4 sm:p-5 flex justify-between items-center shadow-2xl">
         <div class="flex items-center space-x-3">
             <span class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-black px-4 py-2 rounded-2xl text-xl shadow-lg">💻 PANEL ADMIN KUIS</span>
@@ -25,7 +24,6 @@
         </div>
     </header>
 
-    <!-- MAIN ADMIN -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 flex flex-col justify-center">
 
         <!-- LOBBY ADMIN -->
@@ -46,7 +44,6 @@
                 </div>
             </div>
 
-            <!-- Peserta Bergabung -->
             <div class="bg-indigo-950/50 border border-indigo-800/80 p-6 sm:p-8 rounded-3xl shadow-2xl backdrop-blur-md min-h-[320px]">
                 <div class="flex justify-between items-center mb-6 pb-4 border-b border-indigo-900">
                     <h3 class="font-black text-lg text-white">👥 Peserta Bergabung (<span x-text="Object.keys(participants).length"></span>)</h3>
@@ -99,10 +96,27 @@
 
             <div class="flex justify-between items-center bg-indigo-950/80 border border-indigo-900 p-5 rounded-2xl">
                 <p class="text-xs text-indigo-300">Peserta sedang menjawab di perangkat mereka...</p>
-                <button @click="forceNextQuestion()" class="px-5 py-3 bg-pink-700 hover:bg-pink-600 text-xs font-black rounded-xl shadow transition">
-                    Tutup Soal & Lihat Skor ⏭️
+                <button @click="forceTimeOut()" class="px-5 py-3 bg-pink-700 hover:bg-pink-600 text-xs font-black rounded-xl shadow transition">
+                    Tutup Soal & Lihat Jawaban ⏭️
                 </button>
             </div>
+        </div>
+
+        <!-- SESI REVIEW JAWABAN BENAR -->
+        <div x-show="gameState.screen === 'review'" class="space-y-6 max-w-4xl mx-auto w-full py-4 text-center" x-cloak>
+            <div class="bg-gradient-to-r from-emerald-900/80 to-teal-900/80 border-2 border-emerald-500 p-8 rounded-3xl shadow-2xl space-y-4">
+                <span class="text-5xl animate-bounce inline-block">✅</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-emerald-300">WAKTU HABIS! KUNCI JAWABAN BENAR:</h2>
+                <div class="flex flex-wrap justify-center gap-3 pt-2">
+                    <template x-for="k in currentQuestion.keys">
+                        <span class="w-14 h-14 rounded-2xl bg-emerald-500 text-indigo-950 text-2xl font-black flex items-center justify-center shadow-lg border-2 border-white" x-text="k"></span>
+                    </template>
+                </div>
+                <p class="text-xs text-emerald-200 pt-2">Perhatikan kunci jawaban di atas. Menuju papan skor peserta terbaik...</p>
+            </div>
+            <button @click="goToLeaderboard()" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 font-black rounded-2xl shadow-xl transition transform hover:scale-105">
+                Lihat Papan Skor 10 Besar 📊
+            </button>
         </div>
 
         <!-- LEADERBOARD KAHOOT STYLE -->
@@ -181,13 +195,11 @@
 
     </main>
 
-    <!-- FOOTER ADMIN -->
     <footer class="text-center py-6 text-xs text-indigo-400 border-t border-indigo-900/50 space-y-1">
         <p>Aplikasi Kuis Interaktif Real-Time • KKG Korwilbiddikbud Kec. Mranggen Kab. Demak</p>
         <p class="font-semibold text-indigo-300">Created by Muhammad Imam Suwiji • Copyright © Sie Keguruan 2026</p>
     </footer>
 
-    <!-- FIREBASE & LOGIKA ADMIN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -218,7 +230,7 @@
             { question: "Pembelajaran diferensiasi sering kali disalahpahami oleh sebagian pendidik. Manakah pernyataan berikut yang merupakan MITOS atau KESALAHPAHAMAN tentang pembelajaran diferensiasi?", options: { A: "Pembelajaran diferensiasi berarti guru harus membuat 30 RPP berbeda untuk 30 siswa di kelas.", B: "Pembelajaran diferensiasi menurunkan standar/kriteria ketuntasan bagi siswa yang kurang mampu.", C: "Pembelajaran diferensiasi adalah pendekatan yang memberikan cara berbeda untuk mencapai tujuan pembelajaran yang sama.", D: "Pembelajaran diferensiasi hanya berlaku dan berguna untuk siswa berkebutuhan khusus (ABK).", E: "Pembelajaran diferensiasi memerlukan asesmen berkelanjutan, baik awal maupun formatif." }, keys: ["A", "B", "D"] },
             { question: "Ibu Rahma ingin melakukan diferensiasi lingkungan belajar di kelas 1 SD pada pembelajaran membaca awal. Strategi mana saja yang mendukung diferensiasi lingkungan belajar?", options: { A: "Menyediakan \"Sudut Baca\" (reading corner) yang nyaman dengan bantal duduk untuk membaca mandiri.", B: "Mengatur tata letak meja-kursi yang mudah diubah dari format klasikal ke format diskusi kelompok kecil.", C: "Menyediakan area tenang (quiet area) bagi siswa yang membutuhkan konsentrasi tanpa gangguan suara.", D: "Mematikan seluruh lampu kelas agar siswa berlatih membaca dalam kondisi redup.", E: "Memajang karya seluruh siswa di dinding kelas untuk membangun iklim belajar yang inklusif dan menghargai usaha." }, keys: ["A", "B", "C", "E"] },
             { question: "Manakah indikator yang menunjukkan bahwa seorang guru SD telah menerapkan scaffolding dengan tepat pada kelompok siswa yang mengalami kesulitan belajar (perlu bimbingan)?", options: { A: "Guru langsung memberikan kunci jawaban soal agar siswa bisa cepat selesai.", B: "Guru memberikan pertanyaan pemantik terarah untuk memancing pemikiran siswa secara bertahap.", C: "Guru menyediakan alat bantu visual/konkret saat menjelaskan konsep dasar.", D: "Guru mengurangi tingkat bimbingan secara perlahan seiring meningkatnya kemandirian siswa (fading).", E: "Guru membiarkan siswa mengerjakan sendiri tanpa petunjuk apa pun agar melatih kemandirian." }, keys: ["B", "C", "D"] },
-            { question: "Dalam penyusunan rubrik evaluasi pembelajaran diferensiasi di SD, manakah prinsip-prinsip penilaian yang harus dipegang oleh guru?", options: { A: "Rubrik penilaian harus berfokus pada ketercapaian Tujuan Pembelajaran (TP), bukan pada estetika fisik produk semata.", B: "Siswa yang memilih produk berupa video harus mendapatkan nilai maksimal lebih tinggi daripada yang menggambar poster.", C: "Kriteria penilaian kualitatif (seperti penguasaan konsep dan kelogisan) harus berlaku adil untuk semua moda produk.", D: "Penilaian formatif digunakan untuk memberikan umpan balik perbaikan, bukan sekadar menghitung skor akhir.", E: "Rubrik harus dibuat serumit mungkin agar siswa tidak mudah mendapatkan nilai baik." }, keys: ["A", "C", "D"] }
+            { question: "In penyusunan rubrik evaluasi pembelajaran diferensiasi di SD, manakah prinsip-prinsip penilaian yang harus dipegang oleh guru?", options: { A: "Rubrik penilaian harus berfokus pada ketercapaian Tujuan Pembelajaran (TP), bukan pada estetika fisik produk semata.", B: "Siswa yang memilih produk berupa video harus mendapatkan nilai maksimal lebih tinggi daripada yang menggambar poster.", C: "Kriteria penilaian kualitatif (seperti penguasaan konsep dan kelogisan) harus berlaku adil untuk semua moda produk.", D: "Penilaian formatif digunakan untuk memberikan umpan balik perbaikan, bukan sekadar menghitung skor akhir.", E: "Rubrik harus dibuat serumit mungkin agar siswa tidak mudah mendapatkan nilai baik." }, keys: ["A", "C", "D"] }
         ];
 
         function adminApp() {
@@ -239,8 +251,13 @@
                                     let oldScreen = this.gameState.screen;
                                     this.gameState = data;
                                     if (oldScreen !== data.screen) {
-                                        if (data.screen === 'question') this.playMillionaireSound();
-                                        else if (data.screen === 'podium') this.playPodiumSound();
+                                        if (data.screen === 'question') {
+                                            this.playTensionSound();
+                                        } else if (data.screen === 'review') {
+                                            this.playReviewSound();
+                                        } else if (data.screen === 'podium') {
+                                            this.playPodiumSound();
+                                        }
                                     }
                                 }
                             });
@@ -261,7 +278,7 @@
                         const gain = ctx.createGain();
                         osc.type = type;
                         osc.frequency.setValueAtTime(freq, ctx.currentTime);
-                        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                        gain.gain.setValueAtTime(0.15, ctx.currentTime);
                         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
                         osc.connect(gain);
                         gain.connect(ctx.destination);
@@ -270,11 +287,17 @@
                     } catch (e) {}
                 },
 
-                playMillionaireSound() {
+                playTensionSound() {
                     if (!this.soundEnabled) return;
-                    setTimeout(() => this.playTone(300, 'sawtooth', 0.15), 0);
-                    setTimeout(() => this.playTone(350, 'sawtooth', 0.15), 150);
-                    setTimeout(() => this.playTone(400, 'sawtooth', 0.3), 300);
+                    setTimeout(() => this.playTone(250, 'sawtooth', 0.2), 0);
+                    setTimeout(() => this.playTone(300, 'sawtooth', 0.2), 200);
+                    setTimeout(() => this.playTone(350, 'sawtooth', 0.4), 400);
+                },
+
+                playReviewSound() {
+                    if (!this.soundEnabled) return;
+                    setTimeout(() => this.playTone(400, 'square', 0.2), 0);
+                    setTimeout(() => this.playTone(600, 'square', 0.3), 200);
                 },
 
                 playPodiumSound() {
@@ -282,7 +305,7 @@
                     setTimeout(() => this.playTone(523.25, 'triangle', 0.2), 0);
                     setTimeout(() => this.playTone(659.25, 'triangle', 0.2), 200);
                     setTimeout(() => this.playTone(783.99, 'triangle', 0.2), 400);
-                    setTimeout(() => this.playTone(1046.50, 'triangle', 0.6), 600);
+                    setTimeout(() => this.playTone(1046.50, 'triangle', 0.8), 600);
                 },
 
                 setupAdmin() {
@@ -337,13 +360,18 @@
                             update(ref(window.dbRef.db, 'quizState'), { timeLeft: timeLeft });
                         } else {
                             clearInterval(this.timerInterval);
-                            update(ref(window.dbRef.db, 'quizState'), { screen: 'leaderboard' });
+                            update(ref(window.dbRef.db, 'quizState'), { screen: 'review' });
                         }
                     }, 1000);
                 },
 
-                forceNextQuestion() {
+                forceTimeOut() {
                     if (this.timerInterval) clearInterval(this.timerInterval);
+                    const { ref, update } = window.dbRef;
+                    update(ref(window.dbRef.db, 'quizState'), { screen: 'review' });
+                },
+
+                goToLeaderboard() {
                     const { ref, update } = window.dbRef;
                     update(ref(window.dbRef.db, 'quizState'), { screen: 'leaderboard' });
                 },
