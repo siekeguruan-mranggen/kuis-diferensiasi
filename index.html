@@ -40,7 +40,7 @@
                 <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
                     KUIS PERTEMUAN KE-3
                 </h1>
-                <p class="text-indigo-200 text-sm sm:text-base">Strategi Pembelajaran Diferensiasi di Sekolah Dasar</p>
+                <p class="text-indigo-200 text-sm sm:text-base">Strategi Pembelajaran Diferensiasi di Sekolah Dasar[cite: 1]</p>
             </div>
 
             <div class="bg-indigo-900/50 border border-indigo-700/50 p-6 rounded-3xl shadow-xl space-y-5 backdrop-blur">
@@ -99,19 +99,19 @@
             <div class="flex flex-col sm:flex-row justify-between items-center bg-indigo-900/40 border border-indigo-800 p-6 rounded-3xl gap-4 backdrop-blur">
                 <div>
                     <h2 class="text-2xl font-bold flex items-center space-x-2">
-                        <span>👥 Ruang Tunggu Peserta (Lobby)</span>
+                        <span>👥 Ruang Tunggu Peserta (Lobby)[cite: 1]</span>
                     </h2>
                     <p class="text-xs text-indigo-300 mt-1">Bagikan link kuis ini. Peserta yang masuk akan otomatis muncul di bawah.</p>
                 </div>
                 <button @click="startQuiz()" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 font-bold rounded-xl shadow-lg transition flex items-center space-x-2 animate-pulse">
-                    <span>Mulai Kuis Sekarang</span>
+                    <span>Mulai Kuis Sekarang[cite: 1]</span>
                     <span>▶️</span>
                 </button>
             </div>
 
             <div class="bg-indigo-900/30 border border-indigo-800/60 p-6 rounded-3xl min-h-[250px]">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-semibold text-sm text-indigo-200">Peserta Bergabung (<span x-text="Object.keys(participants).length"></span>)</h3>
+                    <h3 class="font-semibold text-sm text-indigo-200">Peserta Bergabung (<span x-text="Object.keys(participants).length"></span>)[cite: 1]</h3>
                     <span class="text-xs text-emerald-400 flex items-center gap-1">● Real-time Sinkron</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
@@ -136,7 +136,7 @@
             <div class="flex justify-between items-center bg-indigo-900/60 border border-indigo-800 px-6 py-4 rounded-2xl backdrop-blur">
                 <div class="flex items-center space-x-3">
                     <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow" x-text="'Soal ' + (gameState.currentIndex + 1) + ' / 10'"></span>
-                    <span class="text-xs text-indigo-300 hidden sm:inline-block">Pilihan Ganda Kompleks</span>
+                    <span class="text-xs text-indigo-300 hidden sm:inline-block">Pilihan Ganda Kompleks[cite: 1]</span>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="text-xs text-indigo-300" x-show="role === 'participant'">Skor: <strong class="text-pink-400" x-text="myScore"></strong></div>
@@ -218,7 +218,7 @@
                 <h1 class="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-amber-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
                     🏆 PODIUM JUARA KUIS KKG 🏆[cite: 1]
                 </h1>
-                <p class="text-indigo-200 text-sm">Hasil Akhir Evaluasi Modul 4: Strategi Pembelajaran Diferensiasi</p>
+                <p class="text-indigo-200 text-sm">Hasil Akhir Evaluasi Modul 4: Strategi Pembelajaran Diferensiasi[cite: 1]</p>
             </div>
 
             <div class="grid grid-cols-3 gap-4 items-end pt-8 max-w-lg mx-auto">
@@ -261,22 +261,20 @@
         Aplikasi Kuis Interaktif Real-Time • KKG Korwilbiddikbud Kec. Mranggen Kab. Demak[cite: 1]
     </footer>
 
-    <!-- FIREBASE CDN -->
+    <!-- FIREBASE CDN & CONFIG -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // ==========================================
-        // MASUKKAN KONFIGURASI FIREBASE ANDA DI SINI
-        // ==========================================
+        // Konfigurasi Firebase Anda yang asli
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            databaseURL: "YOUR_DATABASE_URL",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyDv8yIf9jv8DUYpgdQdnJmpDnoqFI-v-M",
+            authDomain: "kuis-diferensiasi-kkg-9ca65.firebaseapp.com",
+            databaseURL: "https://kuis-diferensiasi-kkg-9ca65-default-rtdb.firebaseio.com",
+            projectId: "kuis-diferensiasi-kkg-9ca65",
+            storageBucket: "kuis-diferensiasi-kkg-9ca65.firebasestorage.app",
+            messagingSenderId: "711355022493",
+            appId: "1:711355022493:web:0bdfa3c480746e0be5b849"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -288,7 +286,7 @@
     <script>
         const questionsData = [
             {
-                question: "Ibu Purwanti mengajar di kelas 3 SD dan ingin menerapkan diferensiasi konten pada materi \"Keliling dan Luas Bangun Datar\". Manakah dari langkah-langkah berikut yang termasuk strategi diferensiasi konten?",
+                question: "Ibu Purwanti mengajar di kelas 3 SD dan ingin menerapkan diferensiasi konten pada materi \"Keliling dan Luas Bangun Datar\". Manakah dari langkah-langkah berikut yang termasuk strategi diferensiasi konten?[cite: 1]",
                 options: {
                     A: "Menyediakan papan paku (geoboard) dan karet untuk kelompok yang butuh eksplorasi konkret.",
                     B: "Menyediakan lembar kerja bergambar bangun datar berwarna untuk kelompok visual.",
@@ -299,7 +297,7 @@
                 keys: ["A", "B", "D"]
             },
             {
-                question: "Asesmen diagnostik awal merupakan pondasi utama dalam pembelajaran diferensiasi. Manakah pernyataan berikut yang BENAR mengenai fungsi asesmen diagnostik di Sekolah Dasar?",
+                question: "Asesmen diagnostik awal merupakan pondasi utama dalam pembelajaran diferensiasi. Manakah pernyataan berikut yang BENAR mengenai fungsi asesmen diagnostik di Sekolah Dasar?[cite: 1]",
                 options: {
                     A: "Menentukan nilai akhir rapor peserta didik pada bab tertentu.",
                     B: "Memetakan kesiapan belajar (readiness) siswa sebelum masuk ke materi baru.",
@@ -310,7 +308,7 @@
                 keys: ["B", "C", "E"]
             },
             {
-                question: "Pak Sudadi mengamati bahwa siswa kelas 5 SD memiliki kemampuan awal yang berbeda pada topik \"Sistem Pencernaan Manusia\". Ia menerapkan diferensiasi proses melalui tiered activities (aktivitas berjenjang). Manakah aktivitas yang mencerminkan diferensiasi proses tersebut?",
+                question: "Pak Sudadi mengamati bahwa siswa kelas 5 SD memiliki kemampuan awal yang berbeda pada topik \"Sistem Pencernaan Manusia\". Ia menerapkan diferensiasi proses melalui tiered activities (aktivitas berjenjang). Manakah aktivitas yang mencerminkan diferensiasi proses tersebut?[cite: 1]",
                 options: {
                     A: "Kelompok A menyusun urutan organ pencernaan menggunakan kartu gambar berlabel.",
                     B: "Kelompok B menganalisis fungsi setiap organ dan dampaknya jika terjadi gangguan.",
@@ -321,7 +319,7 @@
                 keys: ["A", "B", "C", "E"]
             },
             {
-                question: "Pembelajaran diferensiasi didasari oleh berbagai landasan teori pendidikan modern. Manakah pasangan teori dan implikasinya dalam pembelajaran diferensiasi yang BENAR?",
+                question: "Pembelajaran diferensiasi didasari oleh berbagai landasan teori pendidikan modern. Manakah pasangan teori dan implikasinya dalam pembelajaran diferensiasi yang BENAR?[cite: 1]",
                 options: {
                     A: "Zone of Proximal Development (Vygotsky) → Pemberian tingkat bimbingan (scaffolding) sesuai kebutuhan siswa.",
                     B: "Multiple Intelligences (Gardner) → Penyediaan pilihan moda unjuk kerja/produk hasil belajar.",
@@ -332,7 +330,7 @@
                 keys: ["A", "B", "C", "E"]
             },
             {
-                question: "Prinsip diferensiasi produk menekankan bahwa bukti pemahaman siswa tidak harus seragam. Manakah contoh penerapan diferensiasi produk yang tepat di kelas 4 SD pada pelajaran IPAS?",
+                question: "Prinsip diferensiasi produk menekankan bahwa bukti pemahaman siswa tidak harus seragam. Manakah contoh penerapan diferensiasi produk yang tepat di kelas 4 SD pada pelajaran IPAS?[cite: 1]",
                 options: {
                     A: "Siswa yang hobi menggambar menyajikan rantai makanan dalam bentuk komik berwarna.",
                     B: "Siswa yang suka berbicara menyajikan analisis ekosistem melalui rekaman presentasi lisan.",
@@ -343,7 +341,7 @@
                 keys: ["A", "B", "D", "E"]
             },
             {
-                question: "Manajemen kelas yang efektif sangat krusial agar pembelajaran diferensiasi di SD berjalan terarah dan kondusif. Manakah praktik manajemen kelas berdiferensiasi yang BENAR?",
+                question: "Manajemen kelas yang efektif sangat krusial agar pembelajaran diferensiasi di SD berjalan terarah dan kondusif. Manakah praktik manajemen kelas berdiferensiasi yang BENAR?[cite: 1]",
                 options: {
                     A: "Menyusun prosedur dan aturan kelas (classroom routines) yang jelas sebelum kegiatan dimulai.",
                     B: "Menggunakan pengelompokan yang dinamis dan fleksibel (flexible grouping), tidak kaku.",
@@ -354,7 +352,7 @@
                 keys: ["A", "B", "D"]
             },
             {
-                question: "Pembelajaran diferensiasi sering kali disalahpahami oleh sebagian pendidik. Manakah pernyataan berikut yang merupakan MITOS atau KESALAHPAHAMAN tentang pembelajaran diferensiasi?",
+                question: "Pembelajaran diferensiasi sering kali disalahpahami oleh sebagian pendidik. Manakah pernyataan berikut yang merupakan MITOS atau KESALAHPAHAMAN tentang pembelajaran diferensiasi?[cite: 1]",
                 options: {
                     A: "Pembelajaran diferensiasi berarti guru harus membuat 30 RPP berbeda untuk 30 siswa di kelas.",
                     B: "Pembelajaran diferensiasi menurunkan standar/kriteria ketuntasan bagi siswa yang kurang mampu.",
@@ -365,7 +363,7 @@
                 keys: ["A", "B", "D"]
             },
             {
-                question: "Ibu Rahma ingin melakukan diferensiasi lingkungan belajar di kelas 1 SD pada pembelajaran membaca awal. Strategi mana saja yang mendukung diferensiasi lingkungan belajar?",
+                question: "Ibu Rahma ingin melakukan diferensiasi lingkungan belajar di kelas 1 SD pada pembelajaran membaca awal. Strategi mana saja yang mendukung diferensiasi lingkungan belajar?[cite: 1]",
                 options: {
                     A: "Menyediakan \"Sudut Baca\" (reading corner) yang nyaman dengan bantal duduk untuk membaca mandiri.",
                     B: "Mengatur tata letak meja-kursi yang mudah diubah dari format klasikal ke format diskusi kelompok kecil.",
@@ -376,7 +374,7 @@
                 keys: ["A", "B", "C", "E"]
             },
             {
-                question: "Manakah indikator yang menunjukkan bahwa seorang guru SD telah menerapkan scaffolding dengan tepat pada kelompok siswa yang mengalami kesulitan belajar (perlu bimbingan)?",
+                question: "Manakah indikator yang menunjukkan bahwa seorang guru SD telah menerapkan scaffolding dengan tepat pada kelompok siswa yang mengalami kesulitan belajar (perlu bimbingan)?[cite: 1]",
                 options: {
                     A: "Guru langsung memberikan kunci jawaban soal agar siswa bisa cepat selesai.",
                     B: "Guru memberikan pertanyaan pemantik terarah untuk memancing pemikiran siswa secara bertahap.",
@@ -387,7 +385,7 @@
                 keys: ["B", "C", "D"]
             },
             {
-                question: "Dalam penyusunan rubrik evaluasi pembelajaran diferensiasi di SD, manakah prinsip-prinsip penilaian yang harus dipegang oleh guru?",
+                question: "Dalam penyusunan rubrik evaluasi pembelajaran diferensiasi di SD, manakah prinsip-prinsip penilaian yang harus dipegang oleh guru?[cite: 1]",
                 options: {
                     A: "Rubrik penilaian harus berfokus pada ketercapaian Tujuan Pembelajaran (TP), bukan pada estetika fisik produk semata.",
                     B: "Siswa yang memilih produk berupa video harus mendapatkan nilai maksimal lebih tinggi daripada yang menggambar poster.",
